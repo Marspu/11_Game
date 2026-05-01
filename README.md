@@ -9,6 +9,7 @@
 | 🎨 颜色魔法学院 | 探索颜色混合的奥秘，学习光的魔法和颜料的魔法 | [color_mixing/](color_mixing/index.html) |
 | 🎹 键盘钢琴 | 用键盘弹奏美妙的音乐，支持自由弹奏和跟随演奏 | [piano/](piano/index.html) |
 | ✨ 沙画艺术 | 小马宝莉主题沙画创作，多种沙画效果 | [sand_art/](sand_art/index.html) |
+| 🌙 月球阴晴圆缺 | 探索月相变化的奥秘，认识新月、上弦月、满月、下弦月 | [moon_phases/](moon_phases/index.html) |
 
 ## 🚀 快速开始
 
@@ -47,10 +48,12 @@ cloudflared tunnel --config config.yml run
 │   ├── index.html
 │   ├── styles.css
 │   └── script.js
-└── sand_art/           # 沙画艺术
-    ├── index.html
-    ├── styles.css
-    └── script.js
+├── sand_art/           # 沙画艺术
+│   ├── index.html
+│   ├── styles.css
+│   └── script.js
+└── moon_phases/        # 月球阴晴圆缺
+    └── index.html
 ```
 
 ## 🌐 访问地址
@@ -82,6 +85,12 @@ cloudflared tunnel --config config.yml run
 - 小马宝莉主题
 - 多种沙画效果（普通、闪亮、彩虹、发光、像素、水彩）
 - 预设图案和自定义颜色
+
+### 月球阴晴圆缺
+- 互动式月相变化演示
+- 太空视角和地球视角双视图
+- 农历日期控制和日历显示
+- 月相卡片和知识讲解
 
 ## 📄 License
 

@@ -97,6 +97,10 @@
             border-color: rgba(255, 183, 77, 0.5);
         }
 
+        .game-card.moon-phases:hover {
+            border-color: rgba(255, 215, 0, 0.5);
+        }
+
         .card-image {
             height: 200px;
             display: flex;
@@ -129,6 +133,10 @@
             background: linear-gradient(135deg, #ffb347 0%, #ff6b6b 50%, #c56cf0 100%);
         }
 
+        .moon-phases .card-image {
+            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 50%, #4a90d9 100%);
+        }
+
         .card-content {
             padding: 25px;
         }
@@ -148,6 +156,10 @@
 
         .sand-art .card-content h3 {
             color: #ffb347;
+        }
+
+        .moon-phases .card-content h3 {
+            color: #ffd700;
         }
 
         .card-content p {
@@ -185,6 +197,11 @@
             color: #ffb347;
         }
 
+        .moon-phases .tag {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+        }
+
         .play-btn {
             display: inline-flex;
             align-items: center;
@@ -209,6 +226,11 @@
 
         .sand-art .play-btn {
             background: linear-gradient(135deg, #ffb347, #ff9800);
+            color: white;
+        }
+
+        .moon-phases .play-btn {
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
             color: white;
         }
 
@@ -270,6 +292,7 @@
         .game-card:nth-child(1) { animation-delay: 0.1s; }
         .game-card:nth-child(2) { animation-delay: 0.2s; }
         .game-card:nth-child(3) { animation-delay: 0.3s; }
+        .game-card:nth-child(4) { animation-delay: 0.4s; }
     </style>
 </head>
 <body>
@@ -325,6 +348,21 @@
                         <span class="tag">💫 多种效果</span>
                     </div>
                     <div class="play-btn">▶ 开始游戏</div>
+                </div>
+            </a>
+
+            <!-- 月球阴晴圆缺 -->
+            <a href="moon_phases/index.html" class="game-card moon-phases">
+                <div class="card-image">🌙</div>
+                <div class="card-content">
+                    <h3>🌙 月球阴晴圆缺</h3>
+                    <p>探索月球阴晴圆缺的奥秘！通过互动演示了解月相变化，认识新月、上弦月、满月、下弦月等不同月相。</p>
+                    <div class="card-tags">
+                        <span class="tag">🌙 月相</span>
+                        <span class="tag">🔭 天文</span>
+                        <span class="tag">📅 农历</span>
+                    </div>
+                    <div class="play-btn">▶ 开始探索</div>
                 </div>
             </a>
         </div>
