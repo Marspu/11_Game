@@ -25,21 +25,44 @@ npx serve .
 
 然后在浏览器中访问 `http://localhost:8080`
 
-### 部署到 Cloudflare Tunnel
+### 部署到 Cloudflare Pages（推荐）
+
+#### 方式一：通过 Cloudflare Dashboard
+
+1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)
+2. 选择 **Pages** → **创建项目**
+3. 连接 GitHub 仓库 `marspu/11_Game`
+4. 设置构建配置：
+   - **框架预设**: 无（纯静态站点）
+   - **构建输出目录**: `.`
+   - **自定义域名**: `11.marspu.top`
+5. 点击 **保存并部署**
+
+#### 方式二：通过 Wrangler CLI
 
 ```bash
-# 启动 Tunnel
-cloudflared tunnel --config config.yml run
+# 安装 Wrangler CLI
+npm install -g wrangler
 
-# 访问地址
-# https://11.marspu.top
+# 登录 Cloudflare
+wrangler login
+
+# 部署到 Cloudflare Pages
+wrangler pages deploy 11_Game --project-name=11-game
 ```
+
+### 访问地址
+
+- **Cloudflare Pages**: https://11-game.pages.dev
+- **自定义域名**: https://11.marspu.top
 
 ## 📁 项目结构
 
 ```
 11_Game/
 ├── index.html          # 首页（游戏选择器）
+├── _routes.json        # Cloudflare Pages 路由配置
+├── wrangler.toml       # Cloudflare Pages 配置文件
 ├── color_mixing/       # 颜色魔法学院
 │   ├── index.html
 │   ├── styles.css
@@ -59,12 +82,13 @@ cloudflared tunnel --config config.yml run
 ## 🌐 访问地址
 
 - **本地**: http://localhost:8080
-- **公网**: https://11.marspu.top
+- **Cloudflare Pages**: https://11-game.pages.dev
+- **自定义域名**: https://11.marspu.top
 
 ## 🛠️ 技术栈
 
 - **前端**: 纯 HTML5 + CSS3 + JavaScript
-- **部署**: Cloudflare Tunnel
+- **部署**: Cloudflare Pages（静态托管）
 - **域名**: marspu.top
 
 ## 📝 开发说明
