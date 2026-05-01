@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>沙画艺术 - 小马宝莉主题</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✨ 沙画艺术 ✨</h1>
+            <p class="subtitle">小马宝莉主题</p>
+        </header>
+
+        <div class="main-content">
+            <!-- 左侧工具栏 -->
+            <div class="toolbar">
+                <div class="tool-section">
+                    <h3>📷 导入图片</h3>
+                    <div class="image-upload">
+                        <input type="file" id="imageUpload" accept="image/*">
+                        <label for="imageUpload" class="upload-btn">选择图片</label>
+                        <p class="upload-hint">支持 JPG、PNG 格式</p>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>🎨 颜色选择</h3>
+                    <div class="color-palette" id="colorPalette"></div>
+                    <div class="custom-color">
+                        <label>自定义颜色:</label>
+                        <input type="color" id="customColor" value="#ff69b4">
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>🖌️ 笔刷大小</h3>
+                    <div class="brush-size">
+                        <input type="range" id="brushSize" min="1" max="50" value="8">
+                        <span id="brushSizeValue">8</span>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>💫 沙画效果</h3>
+                    <select id="sandEffect">
+                        <option value="normal">普通沙子</option>
+                        <option value="sparkle">闪亮沙子</option>
+                        <option value="rainbow">彩虹沙子</option>
+                        <option value="glow">发光效果</option>
+                        <option value="pixel">像素风格</option>
+                        <option value="watercolor">水彩风格</option>
+                    </select>
+                </div>
+
+                <div class="tool-section">
+                    <h3>🌊 效果强度</h3>
+                    <div class="effect-intensity">
+                        <input type="range" id="effectIntensity" min="1" max="10" value="5">
+                        <span id="intensityValue">5</span>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>⚙️ 工具</h3>
+                    <div class="tools">
+                        <button id="eraser" class="tool-btn">🧹 橡皮擦</button>
+                        <button id="clearBtn" class="tool-btn danger">🗑️ 清空画布</button>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>💾 操作</h3>
+                    <div class="actions">
+                        <button id="saveBtn" class="action-btn">📸 保存图片</button>
+                        <button id="resetBtn" class="action-btn">🔄 重置图案</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 画布区域 -->
+            <div class="canvas-container">
+                <canvas id="sandCanvas"></canvas>
+                <div class="canvas-info">
+                    <span id="mousePos">位置: 0, 0</span>
+                    <span id="pixelCount">像素数: 0</span>
+                </div>
+            </div>
+
+            <!-- 右侧预设图案 -->
+            <div class="presets">
+                <h3>🦄 预设图案</h3>
+                <div class="preset-list">
+                    <button class="preset-btn" data-preset="twilight">
+                        <span class="preset-icon">🦄</span>
+                        <span>紫悦</span>
+                    </button>
+                    <button class="preset-btn" data-preset="rainbow">
+                        <span class="preset-icon">🌈</span>
+                        <span>云宝</span>
+                    </button>
+                    <button class="preset-btn" data-preset="pinkie">
+                        <span class="preset-icon">🎈</span>
+                        <span>萍琪</span>
+                    </button>
+                    <button class="preset-btn" data-preset="rarity">
+                        <span class="preset-icon">💎</span>
+                        <span>珍奇</span>
+                    </button>
+                    <button class="preset-btn" data-preset="flutter">
+                        <span class="preset-icon">🦋</span>
+                        <span>柔柔</span>
+                    </button>
+                    <button class="preset-btn" data-preset="apple">
+                        <span class="preset-icon">🍎</span>
+                        <span>苹果嘉儿</span>
+                    </button>
+                </div>
+
+                <div class="tool-section">
+                    <h3>📐 画布设置</h3>
+                    <div class="canvas-settings">
+                        <label>背景颜色:</label>
+                        <input type="color" id="bgColor" value="#1a1a2e">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

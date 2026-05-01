@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎹 键盘钢琴</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎹 键盘钢琴</h1>
+            <p class="subtitle">按下键盘字母键开始弹奏</p>
+        </header>
+
+        <div class="main-content">
+            <!-- 左侧控制面板 -->
+            <div class="control-panel">
+                <div class="panel-section">
+                    <h3>🎵 经典曲目</h3>
+                    <div class="song-list">
+                        <button class="song-btn" data-song="twinkle">
+                            <span class="song-icon">⭐</span>
+                            <span>小星星</span>
+                        </button>
+                        <button class="song-btn" data-song="happy_birthday">
+                            <span class="song-icon">🎂</span>
+                            <span>生日快乐</span>
+                        </button>
+                        <button class="song-btn" data-song="ode_to_joy">
+                            <span class="song-icon">🎼</span>
+                            <span>欢乐颂</span>
+                        </button>
+                        <button class="song-btn" data-song="fur_elise">
+                            <span class="song-icon">🎭</span>
+                            <span>致爱丽丝</span>
+                        </button>
+                        <button class="song-btn" data-song="jingle_bells">
+                            <span class="song-icon">🔔</span>
+                            <span>铃儿响叮当</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>🎮 演奏模式</h3>
+                    <div class="mode-buttons">
+                        <button id="freePlay" class="mode-btn active">自由弹奏</button>
+                        <button id="followMode" class="mode-btn">跟随演奏</button>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>🎚️ 音量</h3>
+                    <div class="volume-control">
+                        <span class="volume-icon">🔈</span>
+                        <input type="range" id="volumeSlider" min="0" max="100" value="70">
+                        <span class="volume-icon">🔊</span>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>⌨️ 键盘映射</h3>
+                    <div class="keyboard-hint">
+                        <p>白键: A S D F G H J K L</p>
+                        <p>黑键: W E T Y U O P</p>
+                        <p>低音: Z X C V B N M</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 五线谱显示区域 -->
+            <div class="staff-container">
+                <div class="staff-header">
+                    <h3>🎼 五线谱</h3>
+                    <div class="song-info" id="songInfo">
+                        <span id="currentSong">自由弹奏模式</span>
+                        <span id="progressInfo">进度: 0%</span>
+                    </div>
+                </div>
+                <canvas id="staffCanvas"></canvas>
+                <div class="staff-controls">
+                    <button id="playBtn" class="control-btn">▶ 播放</button>
+                    <button id="pauseBtn" class="control-btn">⏸ 暂停</button>
+                    <button id="stopBtn" class="control-btn">⏹ 停止</button>
+                    <button id="resetBtn" class="control-btn">🔄 重置</button>
+                </div>
+            </div>
+
+            <!-- 钢琴键盘 -->
+            <div class="piano-container">
+                <div class="piano" id="piano">
+                    <!-- 钢琴键将由JavaScript生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

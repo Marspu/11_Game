@@ -1,0 +1,383 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0c0c1d 0%, #1a1a3e 50%, #2d1b4e 100%);
+    min-height: 100vh;
+    color: #e0e0e0;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+header {
+    text-align: center;
+    padding: 10px 0 15px;
+}
+
+header h1 {
+    font-size: 2.2em;
+    background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #ff6b6b);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow 4s linear infinite;
+}
+
+@keyframes rainbow {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+.subtitle {
+    color: #a0a0c0;
+    margin-top: 5px;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 15px;
+}
+
+/* 控制面板 */
+.control-panel {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.panel-section {
+    margin-bottom: 18px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.panel-section:last-child {
+    border-bottom: none;
+}
+
+.panel-section h3 {
+    font-size: 0.95em;
+    margin-bottom: 10px;
+    color: #c0a0ff;
+}
+
+/* 曲目列表 */
+.song-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.song-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.85em;
+    text-align: left;
+}
+
+.song-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(3px);
+}
+
+.song-btn.active {
+    background: linear-gradient(135deg, rgba(100, 50, 200, 0.4), rgba(50, 100, 200, 0.4));
+    border-color: #7b68ee;
+}
+
+.song-icon {
+    font-size: 1.3em;
+}
+
+/* 模式按钮 */
+.mode-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.mode-btn {
+    flex: 1;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.85em;
+}
+
+.mode-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.mode-btn.active {
+    background: linear-gradient(135deg, #6b5ce7, #4d96ff);
+    border-color: transparent;
+}
+
+/* 音量控制 */
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.volume-control input[type="range"] {
+    flex: 1;
+    height: 5px;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    outline: none;
+}
+
+.volume-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(135deg, #6b5ce7, #4d96ff);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.volume-icon {
+    font-size: 1.1em;
+}
+
+/* 键盘提示 */
+.keyboard-hint {
+    font-size: 0.8em;
+    color: #a0a0c0;
+    line-height: 1.6;
+}
+
+.keyboard-hint p {
+    margin: 3px 0;
+}
+
+/* 五线谱容器 */
+.staff-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.staff-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.staff-header h3 {
+    color: #c0a0ff;
+    font-size: 1em;
+}
+
+.song-info {
+    display: flex;
+    gap: 15px;
+    font-size: 0.85em;
+    color: #a0a0c0;
+}
+
+#staffCanvas {
+    width: 100%;
+    height: 200px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    display: block;
+}
+
+.staff-controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.control-btn {
+    flex: 1;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.85em;
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+/* 钢琴容器 */
+.piano-container {
+    grid-column: 1 / -1;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow-x: auto;
+}
+
+.piano {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    height: 200px;
+    min-width: 700px;
+}
+
+/* 钢琴键 */
+.key {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    user-select: none;
+}
+
+.key-white {
+    width: 50px;
+    height: 180px;
+    background: linear-gradient(180deg, #f8f8f8 0%, #e8e8e8 100%);
+    border: 1px solid #ccc;
+    border-radius: 0 0 8px 8px;
+    margin: 0 1px;
+    z-index: 1;
+}
+
+.key-white:hover {
+    background: linear-gradient(180deg, #fff 0%, #f0f0f0 100%);
+}
+
+.key-white.active {
+    background: linear-gradient(180deg, #ddd 0%, #ccc 100%);
+    transform: scaleY(0.98);
+    transform-origin: top;
+}
+
+/* 当前音符高亮 */
+.key-white.current {
+    background: linear-gradient(180deg, #ffd93d 0%, #ff9f43 100%);
+    box-shadow: 0 0 15px rgba(255, 217, 61, 0.6);
+}
+
+.key-black.current {
+    background: linear-gradient(180deg, #ffd93d 0%, #ff9f43 100%);
+    box-shadow: 0 0 15px rgba(255, 217, 61, 0.6);
+}
+
+.key-black {
+    width: 32px;
+    height: 115px;
+    background: linear-gradient(180deg, #333 0%, #111 100%);
+    border-radius: 0 0 6px 6px;
+    position: absolute;
+    z-index: 2;
+    margin-left: -16px;
+}
+
+.key-black:hover {
+    background: linear-gradient(180deg, #444 0%, #222 100%);
+}
+
+.key-black.active {
+    background: linear-gradient(180deg, #555 0%, #333 100%);
+    transform: scaleY(0.97);
+    transform-origin: top;
+}
+
+.key-label {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7em;
+    color: #666;
+    pointer-events: none;
+}
+
+.key-black .key-label {
+    color: #999;
+    bottom: 8px;
+    font-size: 0.6em;
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+
+    .control-panel {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .panel-section {
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.6em;
+    }
+
+    .control-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .piano {
+        height: 150px;
+    }
+
+    .key-white {
+        width: 40px;
+        height: 140px;
+    }
+
+    .key-black {
+        width: 28px;
+        height: 90px;
+    }
+}
+
+/* 动画 */
+@keyframes noteFloat {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-50px); opacity: 0; }
+}
+
+.note-particle {
+    position: absolute;
+    pointer-events: none;
+    animation: noteFloat 1s ease-out forwards;
+}
