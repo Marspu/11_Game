@@ -113,9 +113,3 @@ wrangler pages deploy 11_Game --project-name=11-game
 ### 月球阴晴圆缺
 - 互动式月相变化演示
 - 太空视角和地球视角双视图
-- 农历日期控制和日历显示
-- 月相卡片和知识讲解
-
-## 📄 License
-
-MIT License

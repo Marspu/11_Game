@@ -4,7 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎮 11_Game - 小游戏合集</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-glow: rgba(0, 255, 136, 0.4);
+            --secondary-glow: rgba(0, 204, 255, 0.4);
+            --accent-glow: rgba(255, 102, 255, 0.4);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,311 +23,315 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
             min-height: 100vh;
-            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Mesh Background */
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            animation: float-bg 20s infinite alternate ease-in-out;
+            opacity: 0.6;
+        }
+
+        body::before {
+            top: -100px;
+            left: -100px;
+            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+        }
+
+        body::after {
+            bottom: -100px;
+            right: -100px;
+            background: linear-gradient(to right, #ec4899, #f43f5e);
+            animation-delay: -5s;
+        }
+
+        @keyframes float-bg {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(100px, 50px) scale(1.2); }
+            100% { transform: translate(-50px, 100px) scale(0.8); }
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px 20px;
         }
 
-        /* 头部 */
+        /* Header */
         .header {
             text-align: center;
-            padding: 60px 20px 40px;
+            padding: 40px 20px 60px;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .header h1 {
-            font-size: 3.5em;
+            font-family: 'Outfit', sans-serif;
+            font-size: 4em;
+            font-weight: 800;
             margin-bottom: 10px;
-            background: linear-gradient(90deg, #00ff88, #00ccff, #ff66ff);
+            background: linear-gradient(135deg, #00ff88 0%, #00ccff 50%, #ff66ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: glow 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px var(--primary-glow));
+            animation: text-glow 4s infinite alternate;
         }
 
-        @keyframes glow {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.3); }
+        @keyframes text-glow {
+            0% { filter: drop-shadow(0 0 10px var(--primary-glow)); }
+            100% { filter: drop-shadow(0 0 30px var(--secondary-glow)); }
         }
 
         .header .subtitle {
-            font-size: 1.2em;
-            color: #888;
-            margin-bottom: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4em;
+            color: #cbd5e1;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            font-weight: 300;
         }
 
         .header .description {
-            font-size: 1em;
-            color: #666;
-            max-width: 600px;
-            margin: 0 auto;
+            font-size: 1.1em;
+            color: #94a3b8;
+            max-width: 700px;
+            line-height: 1.6;
+            margin: 0 auto 30px;
         }
 
-        /* 游戏卡片网格 */
+        /* Hero Image Container */
+        .hero-image-wrapper {
+            position: relative;
+            padding: 10px;
+            border-radius: 30px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 350px;
+            margin-bottom: 20px;
+        }
+
+        .hero-image-wrapper:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.2);
+        }
+
+        .hero-image-wrapper img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            object-fit: cover;
+        }
+
+        /* Glassmorphism Game Grid */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
-            padding: 40px 0;
+            padding: 20px 0 60px;
+            position: relative;
+            z-index: 10;
         }
 
-        /* 游戏卡片 */
+        /* Game Card */
         .game-card {
-            background: linear-gradient(145deg, #1e2a4a 0%, #162040 100%);
-            border-radius: 20px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            border: 1px solid var(--card-border);
             overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             text-decoration: none;
             color: inherit;
-            display: block;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+            z-index: 1;
+        }
+
+        .game-card:hover::before {
+            left: 150%;
         }
 
         .game-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-        }
-
-        .game-card.color-mixing:hover {
-            border-color: rgba(255, 107, 107, 0.5);
-        }
-
-        .game-card.piano:hover {
-            border-color: rgba(78, 205, 196, 0.5);
-        }
-
-        .game-card.sand-art:hover {
-            border-color: rgba(255, 183, 77, 0.5);
-        }
-
-        .game-card.moon-phases:hover {
-            border-color: rgba(255, 215, 0, 0.5);
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            border-color: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .card-image {
-            height: 200px;
+            height: 180px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 5em;
+            font-size: 5.5em;
             position: relative;
             overflow: hidden;
+            transition: transform 0.5s;
         }
 
-        .card-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            opacity: 0.3;
+        .game-card:hover .card-image {
+            transform: scale(1.05);
         }
 
-        .color-mixing .card-image {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ffa502 50%, #ff6348 100%);
-        }
-
-        .piano .card-image {
-            background: linear-gradient(135deg, #4ecdc4 0%, #45b7d1 50%, #96ceb4 100%);
-        }
-
-        .sand-art .card-image {
-            background: linear-gradient(135deg, #ffb347 0%, #ff6b6b 50%, #c56cf0 100%);
-        }
-
-        .moon-phases .card-image {
-            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 50%, #4a90d9 100%);
-        }
+        .color-mixing .card-image { background: linear-gradient(135deg, #ff6b6b, #fca5a5); }
+        .piano .card-image { background: linear-gradient(135deg, #4ecdc4, #5eead4); }
+        .sand-art .card-image { background: linear-gradient(135deg, #fbbf24, #fde047); }
+        .moon-phases .card-image { background: linear-gradient(135deg, #60a5fa, #93c5fd); }
 
         .card-content {
-            padding: 25px;
+            padding: 30px 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            position: relative;
+            z-index: 2;
         }
 
         .card-content h3 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6em;
+            margin-bottom: 12px;
+            font-weight: 600;
         }
 
-        .color-mixing .card-content h3 {
-            color: #ff6b6b;
-        }
-
-        .piano .card-content h3 {
-            color: #4ecdc4;
-        }
-
-        .sand-art .card-content h3 {
-            color: #ffb347;
-        }
-
-        .moon-phases .card-content h3 {
-            color: #ffd700;
-        }
+        .color-mixing .card-content h3 { color: #fca5a5; }
+        .piano .card-content h3 { color: #5eead4; }
+        .sand-art .card-content h3 { color: #fde047; }
+        .moon-phases .card-content h3 { color: #93c5fd; }
 
         .card-content p {
-            color: #aaa;
+            color: #cbd5e1;
             font-size: 0.95em;
             line-height: 1.6;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            flex-grow: 1;
         }
 
         .card-tags {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
+            margin-bottom: 20px;
         }
 
         .tag {
-            padding: 4px 12px;
-            border-radius: 15px;
+            padding: 6px 14px;
+            border-radius: 20px;
             font-size: 0.8em;
             font-weight: 500;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .color-mixing .tag {
-            background: rgba(255, 107, 107, 0.2);
-            color: #ff6b6b;
-        }
-
-        .piano .tag {
-            background: rgba(78, 205, 196, 0.2);
-            color: #4ecdc4;
-        }
-
-        .sand-art .tag {
-            background: rgba(255, 183, 77, 0.2);
-            color: #ffb347;
-        }
-
-        .moon-phases .tag {
-            background: rgba(255, 215, 0, 0.2);
-            color: #ffd700;
-        }
+        .color-mixing .tag { background: rgba(252, 165, 165, 0.15); color: #fca5a5; }
+        .piano .tag { background: rgba(94, 234, 212, 0.15); color: #5eead4; }
+        .sand-art .tag { background: rgba(253, 224, 71, 0.15); color: #fde047; }
+        .moon-phases .tag { background: rgba(147, 197, 253, 0.15); color: #93c5fd; }
 
         .play-btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            margin-top: 15px;
-            padding: 10px 20px;
-            border-radius: 25px;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: 30px;
             font-weight: 600;
-            font-size: 0.95em;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1em;
+            letter-spacing: 0.5px;
             transition: all 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            color: #fff;
+            border: none;
+            cursor: pointer;
         }
 
-        .color-mixing .play-btn {
-            background: linear-gradient(135deg, #ff6b6b, #ff5252);
-            color: white;
-        }
+        .color-mixing .play-btn { background: linear-gradient(135deg, #ef4444, #f87171); }
+        .piano .play-btn { background: linear-gradient(135deg, #0d9488, #2dd4bf); }
+        .sand-art .play-btn { background: linear-gradient(135deg, #d97706, #fbbf24); }
+        .moon-phases .play-btn { background: linear-gradient(135deg, #2563eb, #60a5fa); }
 
-        .piano .play-btn {
-            background: linear-gradient(135deg, #4ecdc4, #26a69a);
-            color: white;
-        }
-
-        .sand-art .play-btn {
-            background: linear-gradient(135deg, #ffb347, #ff9800);
-            color: white;
-        }
-
-        .moon-phases .play-btn {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            color: white;
-        }
-
-        .play-btn:hover {
+        .game-card:hover .play-btn {
             transform: scale(1.05);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
 
-        /* 页脚 */
+        /* Footer */
         .footer {
             text-align: center;
             padding: 40px 20px;
-            color: #555;
-            font-size: 0.9em;
+            color: #64748b;
+            font-size: 0.95em;
+            position: relative;
+            z-index: 10;
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
 
         .footer a {
-            color: #00ccff;
+            color: #38bdf8;
             text-decoration: none;
+            transition: color 0.3s;
         }
 
         .footer a:hover {
+            color: #bae6fd;
             text-decoration: underline;
         }
 
-        /* 响应式 */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2.5em;
-            }
-
-            .games-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .card-image {
-                height: 150px;
-                font-size: 4em;
-            }
+        /* Entrance Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 动画 */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .game-card {
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
-
+        .game-card { opacity: 0; animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .game-card:nth-child(1) { animation-delay: 0.1s; }
         .game-card:nth-child(2) { animation-delay: 0.2s; }
         .game-card:nth-child(3) { animation-delay: 0.3s; }
         .game-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        .header { opacity: 0; animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-        /* 头部图片 */
-        .header-image {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .header-image img {
-            max-width: 400px;
-            width: 100%;
-            height: auto;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease;
-        }
-
-        .header-image img:hover {
-            transform: scale(1.02);
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            .header-image img {
-                max-width: 300px;
-            }
+            .header h1 { font-size: 2.8em; }
+            .header .subtitle { font-size: 1.2em; }
+            .hero-image-wrapper { max-width: 250px; }
+            .games-grid { grid-template-columns: 1fr; gap: 20px; }
+            .card-image { height: 150px; font-size: 4.5em; }
         }
     </style>
 </head>
@@ -324,28 +339,27 @@
     <div class="container">
         <!-- 头部 -->
         <header class="header">
-            <h1>🎮 11_Game</h1>
-            <p class="subtitle">🌟 11小朋友的专属小游戏 🌟</p>
-            <p class="description">欢迎来到11小朋友的游戏世界！这里有专门为你准备的幼儿园小游戏，让我们一起学习颜色、音乐、绘画和天文知识吧！</p>
-            <div class="header-image">
-                <img src="11.png" alt="11_Game 封面" />
+            <div class="hero-image-wrapper">
+                <img src="11.png" alt="11小朋友">
             </div>
+            <h1>🎮 11_Game</h1>
+            <p class="subtitle">✨ 11小朋友的专属魔法世界 ✨</p>
+            <p class="description">欢迎来到专为你准备的奇妙乐园！在这里，你可以释放创意、探索宇宙、演奏音乐。准备好开始冒险了吗？</p>
         </header>
 
-        <!-- 游戏卡片 -->
+        <!-- 游戏卡片网格 -->
         <div class="games-grid">
             <!-- 颜色魔法学院 -->
             <a href="color_mixing/index.html" class="game-card color-mixing">
                 <div class="card-image">🎨</div>
                 <div class="card-content">
-                    <h3>🎨 颜色魔法学院</h3>
-                    <p>探索颜色混合的奥秘！通过光的魔法（加色混合）和颜料的魔法（减色混合），学习颜色是如何混合变化的。适合幼儿园小朋友的颜色启蒙游戏！</p>
+                    <h3>颜色魔法学院</h3>
+                    <p>化身小魔法师，探索色彩混合的奥秘！尝试光与颜料的神奇碰撞，看看你能变出多少种新的颜色。</p>
                     <div class="card-tags">
-                        <span class="tag">🎨 颜色混合</span>
-                        <span class="tag">💡 光的魔法</span>
-                        <span class="tag">🎮 互动实验</span>
+                        <span class="tag">🌈 色彩认知</span>
+                        <span class="tag">💡 科学实验</span>
                     </div>
-                    <div class="play-btn">▶ 开始游戏</div>
+                    <div class="play-btn">▶ 开始魔法</div>
                 </div>
             </a>
 
@@ -353,14 +367,13 @@
             <a href="piano/index.html" class="game-card piano">
                 <div class="card-image">🎹</div>
                 <div class="card-content">
-                    <h3>🎹 键盘钢琴</h3>
-                    <p>用键盘弹奏美妙的音乐！支持自由弹奏和跟随演奏模式，内置多首经典曲目，让11小朋友轻松成为小钢琴家！</p>
+                    <h3>键盘钢琴</h3>
+                    <p>你的专属音乐厅！用指尖敲击键盘，弹奏出美妙动听的旋律，开启你的音乐家之旅吧。</p>
                     <div class="card-tags">
-                        <span class="tag">🎵 音乐</span>
-                        <span class="tag">⌨️ 键盘</span>
-                        <span class="tag">🎼 五线谱</span>
+                        <span class="tag">🎵 音乐节奏</span>
+                        <span class="tag">🎼 艺术启蒙</span>
                     </div>
-                    <div class="play-btn">▶ 开始游戏</div>
+                    <div class="play-btn">▶ 演奏音乐</div>
                 </div>
             </a>
 
@@ -368,14 +381,13 @@
             <a href="sand_art/index.html" class="game-card sand-art">
                 <div class="card-image">✨</div>
                 <div class="card-content">
-                    <h3>✨ 沙画艺术</h3>
-                    <p>小马宝莉主题沙画创作！多种沙画效果、预设图案和颜色选择，让11小朋友创作出独一无二的沙画作品。</p>
+                    <h3>沙画艺术</h3>
+                    <p>神奇的流沙画板！选择你喜欢的颜色，在画布上挥洒创意，创作出独一无二的小马宝莉梦幻画作。</p>
                     <div class="card-tags">
-                        <span class="tag">🎨 沙画</span>
-                        <span class="tag">🦄 小马宝莉</span>
-                        <span class="tag">💫 多种效果</span>
+                        <span class="tag">🎨 绘画创作</span>
+                        <span class="tag">🦄 想象力</span>
                     </div>
-                    <div class="play-btn">▶ 开始游戏</div>
+                    <div class="play-btn">▶ 开始创作</div>
                 </div>
             </a>
 
@@ -383,22 +395,21 @@
             <a href="moon_phases/index.html" class="game-card moon-phases">
                 <div class="card-image">🌙</div>
                 <div class="card-content">
-                    <h3>🌙 月球阴晴圆缺</h3>
-                    <p>探索月球阴晴圆缺的奥秘！通过互动演示了解月相变化，认识新月、上弦月、满月、下弦月等不同月相。适合幼儿园小朋友的天文启蒙游戏！</p>
+                    <h3>月亮捉迷藏</h3>
+                    <p>搭乘宇宙飞船去观察月亮！它为什么有时像弯弯的香蕉，有时又像圆圆的玉盘？快来一探究竟。</p>
                     <div class="card-tags">
-                        <span class="tag">🌙 月相</span>
-                        <span class="tag">🔭 天文</span>
-                        <span class="tag">📅 农历</span>
+                        <span class="tag">🔭 天文探索</span>
+                        <span class="tag">⭐ 自然科学</span>
                     </div>
-                    <div class="play-btn">▶ 开始探索</div>
+                    <div class="play-btn">▶ 探索宇宙</div>
                 </div>
             </a>
         </div>
 
         <!-- 页脚 -->
         <footer class="footer">
-            <p>🌟 11_Game - 11小朋友的专属游戏世界 🌟</p>
-            <p style="margin-top: 10px;">专为幼儿园小朋友设计 | <a href="https://github.com/marspu/11_Game" target="_blank">GitHub</a></p>
+            <p>🌟 11_Game - 激发每一个小小好奇心 🌟</p>
+            <p style="margin-top: 10px;">由爱与代码交织而成 | <a href="https://github.com/marspu/11_Game" target="_blank">GitHub</a></p>
         </footer>
     </div>
 </body>
