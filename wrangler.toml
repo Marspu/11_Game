@@ -1,48 +1,5 @@
 # Cloudflare Pages 配置文件
-# 文档: https://developers.cloudflare.com/pages/platform/build-configuration/
+# 使用 pages_build_config 格式
 
 name = "11-game"
-compatibility_date = "2026-05-01"
-
-# Pages 构建配置
-[pages]
-build_command = ""
-publish_dir = "."
-
-# 自定义头部 - HTML 文件
-[[pages.headers]]
-glob = "**/*.html"
-[pages.headers.headers]
-X-Content-Type-Options = "nosniff"
-X-Frame-Options = "DENY"
-X-XSS-Protection = "1; mode=block"
-Referrer-Policy = "strict-origin-when-cross-origin"
-Cache-Control = "public, max-age=3600"
-
-# 自定义头部 - CSS 文件
-[[pages.headers]]
-glob = "**/*.css"
-[pages.headers.headers]
-Cache-Control = "public, max-age=31536000, immutable"
-
-# 自定义头部 - JS 文件
-[[pages.headers]]
-glob = "**/*.js"
-[pages.headers.headers]
-Cache-Control = "public, max-age=31536000, immutable"
-
-# 自定义头部 - 图片文件
-[[pages.headers]]
-glob = "**/*.png"
-[pages.headers.headers]
-Cache-Control = "public, max-age=31536000, immutable"
-
-[[pages.headers]]
-glob = "**/*.jpg"
-[pages.headers.headers]
-Cache-Control = "public, max-age=31536000, immutable"
-
-[[pages.headers]]
-glob = "**/*.svg"
-[pages.headers.headers]
-Cache-Control = "public, max-age=31536000, immutable"
+pages_build_config = { build_command = "exit 0", destination_dir = "." }
