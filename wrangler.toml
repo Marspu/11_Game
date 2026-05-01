@@ -2,40 +2,47 @@
 # 文档: https://developers.cloudflare.com/pages/platform/build-configuration/
 
 name = "11-game"
-pages_build_output_dir = "."
+compatibility_date = "2026-05-01"
 
-# 构建配置（对于纯静态站点，不需要构建命令）
-# build.command = ""
-# build.publish = "."
+# Pages 构建配置
+[pages]
+build_command = ""
+publish_dir = "."
 
-# 路由配置
-[[routes]]
-pattern = "11.marspu.top"
-zone_name = "marspu.top"
-
-# 自定义头部
-[headers]
-# 安全头部
+# 自定义头部 - HTML 文件
+[[pages.headers]]
+glob = "**/*.html"
+[pages.headers.headers]
 X-Content-Type-Options = "nosniff"
 X-Frame-Options = "DENY"
 X-XSS-Protection = "1; mode=block"
 Referrer-Policy = "strict-origin-when-cross-origin"
+Cache-Control = "public, max-age=3600"
 
-# 缓存配置
-[headers."/**/*.html"]
-cache-control = "public, max-age=3600"
+# 自定义头部 - CSS 文件
+[[pages.headers]]
+glob = "**/*.css"
+[pages.headers.headers]
+Cache-Control = "public, max-age=31536000, immutable"
 
-[headers."/**/*.css"]
-cache-control = "public, max-age=31536000, immutable"
+# 自定义头部 - JS 文件
+[[pages.headers]]
+glob = "**/*.js"
+[pages.headers.headers]
+Cache-Control = "public, max-age=31536000, immutable"
 
-[headers."/**/*.js"]
-cache-control = "public, max-age=31536000, immutable"
+# 自定义头部 - 图片文件
+[[pages.headers]]
+glob = "**/*.png"
+[pages.headers.headers]
+Cache-Control = "public, max-age=31536000, immutable"
 
-[headers."/**/*.png"]
-cache-control = "public, max-age=31536000, immutable"
+[[pages.headers]]
+glob = "**/*.jpg"
+[pages.headers.headers]
+Cache-Control = "public, max-age=31536000, immutable"
 
-[headers."/**/*.jpg"]
-cache-control = "public, max-age=31536000, immutable"
-
-[headers."/**/*.svg"]
-cache-control = "public, max-age=31536000, immutable"
+[[pages.headers]]
+glob = "**/*.svg"
+[pages.headers.headers]
+Cache-Control = "public, max-age=31536000, immutable"
