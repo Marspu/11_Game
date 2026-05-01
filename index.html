@@ -6,61 +6,69 @@
     <title>🎮 11_Game - 小游戏合集</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-glow: rgba(0, 255, 136, 0.4);
-            --secondary-glow: rgba(0, 204, 255, 0.4);
-            --accent-glow: rgba(255, 102, 255, 0.4);
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --card-border: rgba(255, 255, 255, 0.1);
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --accent: #ec4899;
+            --bg: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: #0f172a;
-            color: #f8fafc;
+            background-color: var(--bg);
+            color: var(--text-main);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Animated Mesh Background */
-        body::before, body::after {
-            content: '';
+        /* 动态网格背景 */
+        .bg-animate {
             position: fixed;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            filter: blur(120px);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -1;
-            animation: float-bg 20s infinite alternate ease-in-out;
-            opacity: 0.6;
+            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #0f172a 100%);
+            overflow: hidden;
         }
 
-        body::before {
-            top: -100px;
-            left: -100px;
-            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            filter: blur(80px);
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: move 20s infinite alternate;
         }
 
-        body::after {
-            bottom: -100px;
+        .blob-2 {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            width: 400px;
+            height: 400px;
             right: -100px;
-            background: linear-gradient(to right, #ec4899, #f43f5e);
+            top: -100px;
             animation-delay: -5s;
         }
 
-        @keyframes float-bg {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(100px, 50px) scale(1.2); }
-            100% { transform: translate(-50px, 100px) scale(0.8); }
+        @keyframes move {
+            from { transform: translate(-10%, -10%) scale(1); }
+            to { transform: translate(20%, 20%) scale(1.2); }
         }
 
         .container {
@@ -69,347 +77,335 @@
             padding: 40px 20px;
         }
 
-        /* Header */
+        /* 头部设计 */
         .header {
             text-align: center;
-            padding: 40px 20px 60px;
+            margin-bottom: 80px;
             position: relative;
-            z-index: 10;
+        }
+
+        .hero-section {
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 40px;
+            margin-bottom: 40px;
         }
 
-        .header h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 4em;
-            font-weight: 800;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #00ff88 0%, #00ccff 50%, #ff66ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 20px var(--primary-glow));
-            animation: text-glow 4s infinite alternate;
-        }
-
-        @keyframes text-glow {
-            0% { filter: drop-shadow(0 0 10px var(--primary-glow)); }
-            100% { filter: drop-shadow(0 0 30px var(--secondary-glow)); }
-        }
-
-        .header .subtitle {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.4em;
-            color: #cbd5e1;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            font-weight: 300;
-        }
-
-        .header .description {
-            font-size: 1.1em;
-            color: #94a3b8;
-            max-width: 700px;
-            line-height: 1.6;
-            margin: 0 auto 30px;
-        }
-
-        /* Hero Image Container */
         .hero-image-wrapper {
             position: relative;
-            padding: 10px;
+            padding: 20px;
+        }
+
+        .hero-image-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             border-radius: 30px;
-            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-width: 350px;
+            padding: 3px;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.5;
+        }
+
+        .hero-image {
+            max-width: 450px;
+            width: 100%;
+            border-radius: 25px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(1deg); }
+        }
+
+        .title-group h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
             margin-bottom: 20px;
         }
 
-        .hero-image-wrapper:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.2);
+        .description {
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--text-dim);
+            line-height: 1.6;
+            font-size: 1.1rem;
         }
 
-        .hero-image-wrapper img {
-            display: block;
-            width: 100%;
-            height: auto;
-            border-radius: 20px;
-            object-fit: cover;
-        }
-
-        /* Glassmorphism Game Grid */
+        /* 游戏网格 */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 30px;
-            padding: 20px 0 60px;
-            position: relative;
-            z-index: 10;
         }
 
-        /* Game Card */
         .game-card {
             background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
             border-radius: 24px;
-            border: 1px solid var(--card-border);
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            padding: 24px;
             text-decoration: none;
             color: inherit;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             position: relative;
+            overflow: hidden;
         }
 
-        .game-card::before {
+        .game-card::after {
             content: '';
             position: absolute;
-            top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
-            transform: skewX(-20deg);
-            transition: 0.5s;
-            z-index: 1;
-        }
-
-        .game-card:hover::before {
-            left: 150%;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
         }
 
         .game-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-            border-color: rgba(255,255,255,0.3);
-            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5);
         }
 
-        .card-image {
-            height: 180px;
+        .game-card:hover::after {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            width: 80px;
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 5.5em;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.5s;
+            border-radius: 20px;
+            transition: transform 0.3s ease;
         }
 
-        .game-card:hover .card-image {
-            transform: scale(1.05);
-        }
-
-        .color-mixing .card-image { background: linear-gradient(135deg, #ff6b6b, #fca5a5); }
-        .piano .card-image { background: linear-gradient(135deg, #4ecdc4, #5eead4); }
-        .sand-art .card-image { background: linear-gradient(135deg, #fbbf24, #fde047); }
-        .moon-phases .card-image { background: linear-gradient(135deg, #60a5fa, #93c5fd); }
-
-        .card-content {
-            padding: 30px 25px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            position: relative;
-            z-index: 2;
+        .game-card:hover .card-icon {
+            transform: scale(1.1) rotate(-5deg);
         }
 
         .card-content h3 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.6em;
+            font-size: 1.75rem;
+            font-weight: 700;
             margin-bottom: 12px;
-            font-weight: 600;
+            background: linear-gradient(to right, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .color-mixing .card-content h3 { color: #fca5a5; }
-        .piano .card-content h3 { color: #5eead4; }
-        .sand-art .card-content h3 { color: #fde047; }
-        .moon-phases .card-content h3 { color: #93c5fd; }
-
         .card-content p {
-            color: #cbd5e1;
-            font-size: 0.95em;
+            color: var(--text-dim);
             line-height: 1.6;
-            margin-bottom: 20px;
-            flex-grow: 1;
+            margin-bottom: 24px;
+            font-size: 1rem;
         }
 
         .card-tags {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 20px;
+            margin-top: auto;
         }
 
         .tag {
             padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: 500;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            transition: all 0.3s;
         }
 
-        .color-mixing .tag { background: rgba(252, 165, 165, 0.15); color: #fca5a5; }
-        .piano .tag { background: rgba(94, 234, 212, 0.15); color: #5eead4; }
-        .sand-art .tag { background: rgba(253, 224, 71, 0.15); color: #fde047; }
-        .moon-phases .tag { background: rgba(147, 197, 253, 0.15); color: #93c5fd; }
+        .game-card:hover .tag {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.2);
+            color: #fff;
+        }
 
-        .play-btn {
-            display: inline-flex;
+        /* 游戏按钮 */
+        .play-indicator {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
             align-items: center;
             justify-content: center;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-family: 'Outfit', sans-serif;
-            font-size: 1em;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            color: #fff;
-            border: none;
-            cursor: pointer;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
         }
 
-        .color-mixing .play-btn { background: linear-gradient(135deg, #ef4444, #f87171); }
-        .piano .play-btn { background: linear-gradient(135deg, #0d9488, #2dd4bf); }
-        .sand-art .play-btn { background: linear-gradient(135deg, #d97706, #fbbf24); }
-        .moon-phases .play-btn { background: linear-gradient(135deg, #2563eb, #60a5fa); }
-
-        .game-card:hover .play-btn {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        .game-card:hover .play-indicator {
+            opacity: 1;
+            transform: translateX(0);
         }
 
-        /* Footer */
+        /* 页脚 */
         .footer {
+            margin-top: 100px;
+            padding: 60px 20px;
             text-align: center;
-            padding: 40px 20px;
-            color: #64748b;
-            font-size: 0.95em;
-            position: relative;
-            z-index: 10;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .footer p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
         }
 
         .footer a {
-            color: #38bdf8;
+            color: var(--primary);
             text-decoration: none;
             transition: color 0.3s;
         }
 
         .footer a:hover {
-            color: #bae6fd;
-            text-decoration: underline;
+            color: var(--accent);
         }
 
-        /* Entrance Animations */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .game-card { opacity: 0; animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .game-card:nth-child(1) { animation-delay: 0.1s; }
-        .game-card:nth-child(2) { animation-delay: 0.2s; }
-        .game-card:nth-child(3) { animation-delay: 0.3s; }
-        .game-card:nth-child(4) { animation-delay: 0.4s; }
-        
-        .header { opacity: 0; animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
-        /* Responsive */
+        /* 响应式调整 */
         @media (max-width: 768px) {
-            .header h1 { font-size: 2.8em; }
-            .header .subtitle { font-size: 1.2em; }
-            .hero-image-wrapper { max-width: 250px; }
-            .games-grid { grid-template-columns: 1fr; gap: 20px; }
-            .card-image { height: 150px; font-size: 4.5em; }
+            .title-group h1 { font-size: 3rem; }
+            .hero-image { max-width: 320px; }
+            .games-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+    <div class="bg-animate">
+        <div class="blob"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
     <div class="container">
-        <!-- 头部 -->
         <header class="header">
-            <div class="hero-image-wrapper">
-                <img src="11.png" alt="11小朋友">
+            <div class="hero-section">
+                <div class="hero-image-wrapper">
+                    <img src="11.png" alt="11_Game 封面" class="hero-image" />
+                </div>
+                <div class="title-group">
+                    <p class="subtitle">Personal Game Suite</p>
+                    <h1>11_Game</h1>
+                    <p class="description">
+                        欢迎来到11小朋友的游戏世界！这里有专门为你准备的启蒙小游戏，让我们在互动中探索颜色、音乐、艺术与天文的奇妙领域。
+                    </p>
+                </div>
             </div>
-            <h1>🎮 11_Game</h1>
-            <p class="subtitle">✨ 11小朋友的专属魔法世界 ✨</p>
-            <p class="description">欢迎来到专为你准备的奇妙乐园！在这里，你可以释放创意、探索宇宙、演奏音乐。准备好开始冒险了吗？</p>
         </header>
 
-        <!-- 游戏卡片网格 -->
-        <div class="games-grid">
+        <main class="games-grid">
             <!-- 颜色魔法学院 -->
-            <a href="color_mixing/index.html" class="game-card color-mixing">
-                <div class="card-image">🎨</div>
+            <a href="color_mixing/index.html" class="game-card">
+                <div class="card-icon">🎨</div>
                 <div class="card-content">
                     <h3>颜色魔法学院</h3>
-                    <p>化身小魔法师，探索色彩混合的奥秘！尝试光与颜料的神奇碰撞，看看你能变出多少种新的颜色。</p>
+                    <p>探索光与颜料的混合奥秘。通过互动实验室学习颜色是如何变化的，开启科学启蒙的第一步。</p>
                     <div class="card-tags">
-                        <span class="tag">🌈 色彩认知</span>
-                        <span class="tag">💡 科学实验</span>
+                        <span class="tag"># 颜色启蒙</span>
+                        <span class="tag"># 科学实验</span>
                     </div>
-                    <div class="play-btn">▶ 开始魔法</div>
+                </div>
+                <div class="play-indicator">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                 </div>
             </a>
 
             <!-- 键盘钢琴 -->
-            <a href="piano/index.html" class="game-card piano">
-                <div class="card-image">🎹</div>
+            <a href="piano/index.html" class="game-card">
+                <div class="card-icon">🎹</div>
                 <div class="card-content">
-                    <h3>键盘钢琴</h3>
-                    <p>你的专属音乐厅！用指尖敲击键盘，弹奏出美妙动听的旋律，开启你的音乐家之旅吧。</p>
+                    <h3>指尖钢琴家</h3>
+                    <p>用键盘奏响悦耳旋律。支持自由创作与经典曲目演奏模式，让每一位小朋友都能感受音乐的律动。</p>
                     <div class="card-tags">
-                        <span class="tag">🎵 音乐节奏</span>
-                        <span class="tag">🎼 艺术启蒙</span>
+                        <span class="tag"># 音乐节奏</span>
+                        <span class="tag"># 艺术创作</span>
                     </div>
-                    <div class="play-btn">▶ 演奏音乐</div>
+                </div>
+                <div class="play-indicator">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                 </div>
             </a>
 
             <!-- 沙画艺术 -->
-            <a href="sand_art/index.html" class="game-card sand-art">
-                <div class="card-image">✨</div>
+            <a href="sand_art/index.html" class="game-card">
+                <div class="card-icon">✨</div>
                 <div class="card-content">
-                    <h3>沙画艺术</h3>
-                    <p>神奇的流沙画板！选择你喜欢的颜色，在画布上挥洒创意，创作出独一无二的小马宝莉梦幻画作。</p>
+                    <h3>沙画艺术馆</h3>
+                    <p>以沙为笔，绘就童年。内置小马宝莉主题模板，在流沙的光影变幻中释放无限想象力。</p>
                     <div class="card-tags">
-                        <span class="tag">🎨 绘画创作</span>
-                        <span class="tag">🦄 想象力</span>
+                        <span class="tag"># 创意绘图</span>
+                        <span class="tag"># 互动艺术</span>
                     </div>
-                    <div class="play-btn">▶ 开始创作</div>
+                </div>
+                <div class="play-indicator">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                 </div>
             </a>
 
             <!-- 月球阴晴圆缺 -->
-            <a href="moon_phases/index.html" class="game-card moon-phases">
-                <div class="card-image">🌙</div>
+            <a href="moon_phases/index.html" class="game-card">
+                <div class="card-icon">🌙</div>
                 <div class="card-content">
-                    <h3>月亮捉迷藏</h3>
-                    <p>搭乘宇宙飞船去观察月亮！它为什么有时像弯弯的香蕉，有时又像圆圆的玉盘？快来一探究竟。</p>
+                    <h3>月球漫步者</h3>
+                    <p>观测月相的阴晴圆缺。通过三维互动模拟了解天体运行规律，激发对宇宙星空的探索兴趣。</p>
                     <div class="card-tags">
-                        <span class="tag">🔭 天文探索</span>
-                        <span class="tag">⭐ 自然科学</span>
+                        <span class="tag"># 天文知识</span>
+                        <span class="tag"># 3D模拟</span>
                     </div>
-                    <div class="play-btn">▶ 探索宇宙</div>
+                </div>
+                <div class="play-indicator">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                 </div>
             </a>
-        </div>
+        </main>
 
-        <!-- 页脚 -->
         <footer class="footer">
-            <p>🌟 11_Game - 激发每一个小小好奇心 🌟</p>
-            <p style="margin-top: 10px;">由爱与代码交织而成 | <a href="https://github.com/marspu/11_Game" target="_blank">GitHub</a></p>
+            <div class="footer-logo">11_Game</div>
+            <p>专为 11 小朋友打造的创意互动空间</p>
+            <p style="margin-top: 10px; opacity: 0.5;">
+                &copy; 2026 Crafted with ❤️ for 11 | <a href="https://github.com/marspu/11_Game" target="_blank">View on GitHub</a>
+            </p>
         </footer>
     </div>
 </body>

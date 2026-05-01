@@ -1,3 +1,6 @@
 name = "11game"
 compatibility_date = "2026-05-01"
-pages_build_output_dir = "."
+
+[pages_build_config]
+build_command = ""        # 如果没有构建脚本，保持为空
+destination_dir = "."     # 你的 index.html 在根目录，所以填 "."
