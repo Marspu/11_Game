@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧮 数学小冒险 - 11_Game</title>
+    <link rel="stylesheet" href="../shared/theme.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="clouds-bg"></div>
+    <a class="home-btn" href="../index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        返回首页
+    </a>
+
+    <div class="container">
+        <header class="page-header">
+            <h1 class="h-display"><span class="text-rainbow">🧮 数学小冒险</span></h1>
+            <p class="lead">跟小松鼠一起在森林里边吃松果边算数！算对就能前进哦～</p>
+        </header>
+
+        <!-- 开始界面 -->
+        <section class="card menu-card" id="menuScreen">
+            <h2>选择关卡难度</h2>
+            <div class="diff-grid">
+                <button class="diff-btn" data-mode="add10">
+                    <span class="diff-emoji">🐿️</span>
+                    <span class="diff-title">10以内加法</span>
+                    <span class="diff-hint">3 + 5 = ?</span>
+                </button>
+                <button class="diff-btn" data-mode="sub10">
+                    <span class="diff-emoji">🦊</span>
+                    <span class="diff-title">10以内减法</span>
+                    <span class="diff-hint">8 - 3 = ?</span>
+                </button>
+                <button class="diff-btn" data-mode="add20">
+                    <span class="diff-emoji">🐻</span>
+                    <span class="diff-title">20以内加法</span>
+                    <span class="diff-hint">7 + 9 = ?</span>
+                </button>
+                <button class="diff-btn" data-mode="mix">
+                    <span class="diff-emoji">🦁</span>
+                    <span class="diff-title">混合挑战</span>
+                    <span class="diff-hint">随机加减法</span>
+                </button>
+            </div>
+
+            <div class="best-score-box" id="bestScoreBox" hidden>
+                <span>🏆 历史最高</span>
+                <strong id="bestScoreVal">0</strong>
+            </div>
+        </section>
+
+        <!-- 游戏界面 -->
+        <section class="game-screen" id="gameScreen" hidden>
+            <div class="game-hud">
+                <div class="hud-item">
+                    <span class="hud-label">🎯 关卡</span>
+                    <span class="hud-val" id="levelVal">1</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">❤️ 生命</span>
+                    <span class="hud-val" id="livesVal">❤️❤️❤️</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">⭐ 得分</span>
+                    <span class="hud-val" id="scoreVal">0</span>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">🔥 连击</span>
+                    <span class="hud-val" id="comboVal">0</span>
+                </div>
+            </div>
+
+            <div class="forest-stage">
+                <div class="forest-bg">
+                    <span class="bg-tree" style="left:8%;bottom:0">🌳</span>
+                    <span class="bg-tree" style="left:22%;bottom:0">🌲</span>
+                    <span class="bg-tree" style="left:38%;bottom:0">🌳</span>
+                    <span class="bg-tree" style="left:55%;bottom:0">🌲</span>
+                    <span class="bg-tree" style="left:72%;bottom:0">🌳</span>
+                    <span class="bg-tree" style="left:88%;bottom:0">🌲</span>
+                    <span class="bg-cloud" style="left:12%;top:10%">☁️</span>
+                    <span class="bg-cloud" style="left:65%;top:18%">☁️</span>
+                    <span class="bg-sun">☀️</span>
+                </div>
+
+                <div class="track">
+                    <div class="track-progress" id="trackProgress"></div>
+                    <div class="track-squirrel" id="trackSquirrel">🐿️</div>
+                    <div class="track-goal">🏁</div>
+                </div>
+
+                <div class="question-box">
+                    <div class="question-visual" id="questionVisual"></div>
+                    <div class="question-eq" id="questionEq">? + ? = <span class="eq-blank">?</span></div>
+                </div>
+
+                <div class="answer-grid" id="answerGrid">
+                    <!-- 4 个答案按钮动态生成 -->
+                </div>
+            </div>
+
+            <div class="game-actions">
+                <button class="btn btn-secondary" id="backMenuBtn">🏠 返回菜单</button>
+            </div>
+        </section>
+
+        <!-- 结算弹窗 -->
+        <div class="result-mask" id="resultMask" hidden>
+            <div class="result-card">
+                <div class="result-emoji" id="resultEmoji">🏆</div>
+                <h3 class="h-display" id="resultTitle">太棒啦！</h3>
+                <div class="result-stars" id="resultStars">⭐⭐⭐</div>
+                <div class="result-stats">
+                    <div><span>答对</span><strong id="rCorrect">0</strong></div>
+                    <div><span>连击</span><strong id="rCombo">0</strong></div>
+                    <div><span>得分</span><strong id="rScore">0</strong></div>
+                </div>
+                <div class="result-actions">
+                    <button class="btn btn-primary" id="playAgainBtn">🔄 再来一次</button>
+                    <button class="btn btn-secondary" id="backFromResult">🏠 返回菜单</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 庆祝粒子 -->
+        <div class="confetti-root" id="confettiRoot"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

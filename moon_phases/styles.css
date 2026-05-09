@@ -430,6 +430,7 @@ body {
     padding: 20px;
     animation: maskIn 0.25s ease;
 }
+.trivia-mask[hidden] { display: none !important; }
 @keyframes maskIn { from { opacity: 0; } to { opacity: 1; } }
 .trivia-card {
     background: var(--bg-card);

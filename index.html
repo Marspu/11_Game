@@ -198,6 +198,8 @@
         .game-card.card-mint::before  { background: var(--c-mint); }
         .game-card.card-sky::before   { background: var(--c-sky); }
         .game-card.card-grape::before { background: var(--c-grape); }
+        .game-card.card-sun::before   { background: var(--c-sun); }
+        .game-card.card-coral::before { background: var(--c-coral); }
 
         .game-card:hover {
             transform: translateY(-8px) rotate(-0.5deg);
@@ -226,6 +228,8 @@
         .game-card.card-mint  .card-icon-wrap { background: linear-gradient(135deg, #c5f1de, #a8e6cf); }
         .game-card.card-sky   .card-icon-wrap { background: linear-gradient(135deg, #c4e7f7, #a0d8f1); }
         .game-card.card-grape .card-icon-wrap { background: linear-gradient(135deg, #dcc7ff, #c5a3ff); }
+        .game-card.card-sun   .card-icon-wrap { background: linear-gradient(135deg, #ffe8a8, #ffd56b); }
+        .game-card.card-coral .card-icon-wrap { background: linear-gradient(135deg, #ffb0a8, #ff8a80); }
 
         .game-card:hover .card-icon-wrap {
             transform: scale(1.08) rotate(-8deg);
@@ -283,6 +287,8 @@
         .game-card.card-mint:hover  .play-fab { background: var(--c-mint-d); }
         .game-card.card-sky:hover   .play-fab { background: var(--c-sky-d); }
         .game-card.card-grape:hover .play-fab { background: var(--c-grape-d); }
+        .game-card.card-sun:hover   .play-fab { background: var(--c-sun-d); }
+        .game-card.card-coral:hover .play-fab { background: #d65a4d; }
         .game-card:hover .play-fab { transform: scale(1.1) rotate(-15deg); }
 
         /* 底部 */
@@ -345,7 +351,7 @@
         <header class="hero">
             <div class="top-badge">
                 <span class="dot"></span>
-                <span>专为 11 小朋友打造 · 4 款启蒙小游戏</span>
+                <span>专为 11 小朋友打造 · 6 款启蒙小游戏</span>
             </div>
 
             <div class="hero-image-wrap">
@@ -366,7 +372,7 @@
             </p>
 
             <div class="hero-stats">
-                <span class="stat-pill">🎮 <strong>4</strong> 款游戏</span>
+                <span class="stat-pill">🎮 <strong>6</strong> 款游戏</span>
                 <span class="stat-pill">🎯 <strong>0</strong> 广告</span>
                 <span class="stat-pill">🆓 完全免费</span>
                 <span class="stat-pill">📱 手机也能玩</span>
@@ -434,6 +440,36 @@
                         <div class="card-tags">
                             <span class="tag">🌌 天文</span>
                             <span class="tag">🌊 潮汐</span>
+                        </div>
+                        <div class="play-fab">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="math_adventure/index.html" class="game-card card-sun">
+                    <div class="card-icon-wrap">🧮</div>
+                    <h3>数学小冒险</h3>
+                    <p>跟小松鼠在森林里边走边算！答对就前进，闯到终点拿三颗星！</p>
+                    <div class="card-meta">
+                        <div class="card-tags">
+                            <span class="tag">🐿️ 算数</span>
+                            <span class="tag">🏆 闯关</span>
+                        </div>
+                        <div class="play-fab">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="animal_park/index.html" class="game-card card-coral">
+                    <div class="card-icon-wrap">🦁</div>
+                    <h3>动物乐园</h3>
+                    <p>翻牌找一对一对的动物朋友，再把它们送回各自的家！</p>
+                    <div class="card-meta">
+                        <div class="card-tags">
+                            <span class="tag">🐾 记忆</span>
+                            <span class="tag">🌍 拖拽</span>
                         </div>
                         <div class="play-fab">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
