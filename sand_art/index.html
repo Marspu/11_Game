@@ -3,41 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ 沙画艺术馆 - 11_Game</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>沙画艺术馆 - 11_Game</title>
+    <link rel="stylesheet" href="../shared/theme.css">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .home-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 30px;
-            color: #fff;
-            text-decoration: none;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        .home-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateX(5px);
-        }
-    </style>
 </head>
 <body>
+    <div class="clouds-bg"></div>
     <div class="container">
         <!-- 返回首页按钮 -->
         <a href="../index.html" class="home-btn">
@@ -45,8 +16,8 @@
             返回首页
         </a>
         <header>
-            <h1>✨ 沙画艺术馆</h1>
-            <p class="subtitle">小马宝莉主题</p>
+            <h1 class="h-display text-rainbow">沙画艺术馆</h1>
+            <p class="subtitle">小马宝莉主题 · 真实粒子物理</p>
         </header>
 
         <div class="main-content">
@@ -62,19 +33,19 @@
                 </div>
 
                 <div class="tool-section">
-                    <h3>🎨 颜色选择</h3>
+                    <h3>🎨 颜色</h3>
                     <div class="color-palette" id="colorPalette"></div>
                     <div class="custom-color">
-                        <label>自定义颜色:</label>
-                        <input type="color" id="customColor" value="#ff69b4">
+                        <label>自定义:</label>
+                        <input type="color" id="customColor" value="#ffb4a2">
                     </div>
                 </div>
 
                 <div class="tool-section">
                     <h3>🖌️ 笔刷大小</h3>
                     <div class="brush-size">
-                        <input type="range" id="brushSize" min="1" max="50" value="8">
-                        <span id="brushSizeValue">8</span>
+                        <input type="range" id="brushSize" min="1" max="50" value="10">
+                        <span id="brushSizeValue">10</span>
                     </div>
                 </div>
 
@@ -91,10 +62,19 @@
                 </div>
 
                 <div class="tool-section">
-                    <h3>🌊 效果强度</h3>
-                    <div class="effect-intensity">
-                        <input type="range" id="effectIntensity" min="1" max="10" value="5">
-                        <span id="intensityValue">5</span>
+                    <h3>🌍 重力强度</h3>
+                    <div class="brush-size">
+                        <input type="range" id="gravity" min="0" max="100" value="40">
+                        <span id="gravityValue">0.4</span>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>💨 风向</h3>
+                    <div class="wind-group" id="windGroup">
+                        <button class="wind-btn" data-wind="-1">← 左</button>
+                        <button class="wind-btn active" data-wind="0">无</button>
+                        <button class="wind-btn" data-wind="1">右 →</button>
                     </div>
                 </div>
 
@@ -109,6 +89,7 @@
                 <div class="tool-section">
                     <h3>💾 操作</h3>
                     <div class="actions">
+                        <button id="replayBtn" class="action-btn replay">⏯️ 回放</button>
                         <button id="saveBtn" class="action-btn">📸 保存图片</button>
                         <button id="resetBtn" class="action-btn">🔄 重置图案</button>
                     </div>
@@ -117,10 +98,13 @@
 
             <!-- 画布区域 -->
             <div class="canvas-container">
-                <canvas id="sandCanvas"></canvas>
+                <div class="canvas-stack">
+                    <canvas id="sandCanvas"></canvas>
+                    <canvas id="particleCanvas"></canvas>
+                </div>
                 <div class="canvas-info">
                     <span id="mousePos">位置: 0, 0</span>
-                    <span id="pixelCount">像素数: 0</span>
+                    <span id="particleCount">活动粒子: 0</span>
                 </div>
             </div>
 
@@ -129,33 +113,27 @@
                 <h3>🦄 预设图案</h3>
                 <div class="preset-list">
                     <button class="preset-btn" data-preset="twilight">
-                        <span class="preset-icon">🦄</span>
-                        <span>紫悦</span>
+                        <span class="preset-icon">🦄</span><span>紫悦</span>
                     </button>
                     <button class="preset-btn" data-preset="rainbow">
-                        <span class="preset-icon">🌈</span>
-                        <span>云宝</span>
+                        <span class="preset-icon">🌈</span><span>云宝</span>
                     </button>
                     <button class="preset-btn" data-preset="pinkie">
-                        <span class="preset-icon">🎈</span>
-                        <span>萍琪</span>
+                        <span class="preset-icon">🎈</span><span>萍琪</span>
                     </button>
                     <button class="preset-btn" data-preset="rarity">
-                        <span class="preset-icon">💎</span>
-                        <span>珍奇</span>
+                        <span class="preset-icon">💎</span><span>珍奇</span>
                     </button>
                     <button class="preset-btn" data-preset="flutter">
-                        <span class="preset-icon">🦋</span>
-                        <span>柔柔</span>
+                        <span class="preset-icon">🦋</span><span>柔柔</span>
                     </button>
                     <button class="preset-btn" data-preset="apple">
-                        <span class="preset-icon">🍎</span>
-                        <span>苹果嘉儿</span>
+                        <span class="preset-icon">🍎</span><span>苹果嘉儿</span>
                     </button>
                 </div>
 
                 <div class="tool-section">
-                    <h3>📐 画布设置</h3>
+                    <h3>📐 画布背景</h3>
                     <div class="canvas-settings">
                         <label>背景颜色:</label>
                         <input type="color" id="bgColor" value="#1a1a2e">

@@ -1,0 +1,478 @@
+/* ============================================================
+   月球漫步者 · 夜空主题 + 明亮儿童卡片
+   ============================================================ */
+
+body {
+    background:
+        radial-gradient(ellipse at 20% -10%, rgba(197, 163, 255, 0.25), transparent 55%),
+        radial-gradient(ellipse at 90% 10%, rgba(160, 216, 241, 0.2), transparent 55%),
+        linear-gradient(to bottom, #0c0c1e 0%, #1a1a3e 55%, #2d2456 100%);
+    min-height: 100vh;
+    color: var(--text-1);
+    overflow-x: hidden;
+    font-family: var(--font-body);
+}
+
+/* 星空 */
+.stars {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+}
+.stars span {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.3); }
+}
+
+/* 极光氛围 */
+.aurora {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+        radial-gradient(circle at 15% 80%, rgba(168, 230, 207, 0.12), transparent 40%),
+        radial-gradient(circle at 85% 70%, rgba(255, 180, 162, 0.10), transparent 40%);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 90px 20px 60px;
+    position: relative;
+    z-index: 1;
+}
+
+/* 标题 */
+.page-header { text-align: center; margin-bottom: 32px; }
+.title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: #fff;
+    text-shadow: 0 0 24px rgba(255, 213, 107, 0.5), 0 4px 20px rgba(0,0,0,0.3);
+    margin: 0 0 8px;
+}
+.subtitle {
+    color: #d6d3e7;
+    font-size: 1.05rem;
+    margin: 0;
+}
+
+/* 卡片基础（覆盖夜空场景下的对比） */
+.card {
+    background: var(--bg-card);
+    border-radius: var(--r-lg);
+    border: 2px solid var(--border);
+    padding: 22px;
+    box-shadow: var(--shadow-lg), 0 6px 0 rgba(60, 40, 100, 0.25);
+}
+.card-title {
+    color: var(--text-1);
+    margin: 0 0 8px;
+    font-size: 1.25rem;
+}
+.card-title .hint-inline {
+    font-size: 0.75rem;
+    color: var(--text-3);
+    font-weight: 500;
+    margin-left: 8px;
+}
+.card-hint {
+    color: var(--text-2);
+    font-size: 0.9rem;
+    margin: 0 0 14px;
+}
+
+/* 主视图区 */
+.main-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin-bottom: 22px;
+}
+@media (max-width: 900px) { .main-view { grid-template-columns: 1fr; } }
+
+.view-card { display: flex; flex-direction: column; }
+
+/* 太空视图（保留夜空感） */
+.space-view {
+    position: relative;
+    height: 380px;
+    background:
+        radial-gradient(ellipse at center, #1a1a3e 0%, #0a0a1a 100%);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    border: 2px solid #2a2354;
+}
+
+.sun {
+    position: absolute;
+    left: -60px; top: 50%;
+    transform: translateY(-50%);
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, #fff700 0%, #ff8c00 70%, #ff4500 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 60px #ff8c00, 0 0 100px #ff4500;
+}
+.sun-rays {
+    position: absolute;
+    left: -60px; top: 50%;
+    transform: translateY(-50%);
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50%      { transform: translateY(-50%) scale(1.1); }
+}
+.light-rays {
+    position: absolute; top: 0; left: 60px;
+    width: calc(100% - 60px); height: 100%;
+    background: linear-gradient(to right, rgba(255, 200, 50, 0.1) 0%, transparent 100%);
+    pointer-events: none;
+}
+.earth {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px; height: 80px;
+    background: radial-gradient(circle at 30% 30%, #6db0ff 0%, #1e5799 60%, #0d2d52 100%);
+    border-radius: 50%;
+    box-shadow: inset -10px -10px 20px rgba(0,0,0,0.5), 0 0 24px rgba(74,144,217,0.6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+}
+.earth-label { filter: drop-shadow(0 0 4px #000); }
+.moon-orbit {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px; height: 280px;
+    border: 2px dashed rgba(255, 213, 107, 0.35);
+    border-radius: 50%;
+    pointer-events: none;
+}
+.moon {
+    position: absolute;
+    width: 44px; height: 44px;
+    background: radial-gradient(circle at 35% 35%, #fff 0%, #e8e8e8 50%, #b8b8c8 100%);
+    border-radius: 50%;
+    cursor: grab;
+    box-shadow: 0 0 24px rgba(255,255,255,0.6), inset -6px -6px 10px rgba(80,80,100,0.4);
+    transition: box-shadow 0.2s, transform 0.2s;
+    touch-action: none;
+    user-select: none;
+}
+.moon:hover { box-shadow: 0 0 36px rgba(255,255,255,0.9), inset -6px -6px 10px rgba(80,80,100,0.4); }
+.moon.dragging { cursor: grabbing; transform: scale(1.15); }
+.moon-label {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    white-space: nowrap;
+    color: #fff;
+    background: rgba(60, 40, 100, 0.7);
+    padding: 3px 10px;
+    border-radius: var(--r-pill);
+    font-family: var(--font-display);
+    pointer-events: none;
+}
+
+.legend {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: var(--text-2);
+}
+
+/* 地球视角 */
+.earth-view {
+    position: relative;
+    height: 380px;
+    background: radial-gradient(ellipse at center, #1a1a3e 0%, #0a0a1a 100%);
+    border-radius: var(--r-md);
+    border: 2px solid #2a2354;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.viewed-moon {
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(255, 213, 107, 0.35);
+    transition: box-shadow 0.4s;
+}
+.phase-name {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 0 12px rgba(255, 213, 107, 0.8);
+}
+
+/* 控制 + 潮汐 */
+.controls-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin-bottom: 22px;
+}
+@media (max-width: 900px) { .controls-row { grid-template-columns: 1fr; } }
+
+.slider-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: var(--text-2);
+}
+.day-display {
+    text-align: center;
+    margin: 14px 0 16px;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--c-grape-d);
+}
+.day-display span { color: var(--c-peach-d); }
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.btn-group .btn { flex: 1; min-width: 80px; padding: 10px 14px; font-size: 0.9rem; }
+
+/* 潮汐 */
+.tide-card { display: flex; flex-direction: column; }
+.tide-stage {
+    position: relative;
+    height: 160px;
+    background: linear-gradient(to bottom, #fff8ee 0%, #f0f7fb 100%);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    border: 2px solid var(--border);
+    margin-bottom: 14px;
+}
+.tide-svg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+}
+.tide-marker {
+    position: absolute;
+    right: 16px;
+    bottom: 8px;
+    display: flex; flex-direction: column; align-items: center;
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    transition: bottom 0.6s cubic-bezier(.34,1.56,.64,1);
+    pointer-events: none;
+}
+.tide-arrow { font-size: 22px; }
+.tide-label {
+    background: rgba(255,255,255,0.85);
+    color: var(--c-sky-d);
+    padding: 3px 12px;
+    border-radius: var(--r-pill);
+    font-size: 0.85rem;
+    margin-top: 4px;
+    box-shadow: var(--shadow-sm);
+}
+.tide-meter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--text-2);
+}
+.tide-bar {
+    flex: 1;
+    height: 10px;
+    background: var(--border);
+    border-radius: var(--r-pill);
+    overflow: hidden;
+}
+.tide-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--c-mint), var(--c-sky), var(--c-grape));
+    border-radius: var(--r-pill);
+    width: 50%;
+    transition: width 0.6s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* 月相卡片 */
+.phase-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+}
+.phase-card {
+    background: var(--bg-soft);
+    border: 2px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 16px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s, background 0.2s;
+    box-shadow: 0 3px 0 var(--border-2);
+}
+.phase-card:hover {
+    transform: translateY(-4px);
+    background: #fff;
+    box-shadow: 0 7px 0 var(--c-sun), var(--shadow-md);
+}
+.phase-card.active {
+    background: #fff;
+    border-color: var(--c-sun);
+    box-shadow: 0 5px 0 var(--c-sun-d), var(--shadow-md);
+}
+.phase-card .moon-mini {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    background: #1a1a2e;
+    overflow: hidden;
+    box-shadow: 0 0 12px rgba(80, 60, 140, 0.3);
+}
+.phase-card .pname {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--text-1);
+    font-size: 0.95rem;
+}
+.phase-card .pdesc {
+    font-size: 0.75rem;
+    color: var(--text-3);
+    margin-top: 2px;
+}
+
+/* 日历 */
+.calendar-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+    font-size: 1.15rem;
+    color: var(--text-1);
+}
+.cal-nav { padding: 6px 14px; font-size: 0.9rem; }
+.weekdays {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    gap: 6px; margin-bottom: 8px;
+}
+.weekday {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-3);
+    padding: 6px;
+    font-family: var(--font-display);
+}
+.calendar-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+}
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: var(--bg-soft);
+    border: 2px solid transparent;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s, border-color 0.15s;
+    font-size: 12px;
+    color: var(--text-1);
+}
+.calendar-day:hover {
+    background: #fff;
+    border-color: var(--c-sun);
+    transform: scale(1.05);
+}
+.calendar-day.selected {
+    background: var(--c-sun);
+    border-color: var(--c-sun-d);
+    color: var(--text-1);
+    font-weight: 700;
+}
+.calendar-day .date { font-size: 0.95rem; font-weight: 700; font-family: var(--font-display); }
+.calendar-day .moon-icon { font-size: 1rem; margin-top: 1px; }
+
+/* 解释区域 */
+.explanation p { line-height: 1.85; margin: 0 0 10px; color: var(--text-2); }
+.explanation .highlight {
+    color: var(--c-peach-d);
+    font-weight: 700;
+    background: rgba(255, 213, 107, 0.25);
+    padding: 1px 6px;
+    border-radius: 6px;
+}
+.explanation strong { color: var(--text-1); }
+.explain-list { padding-left: 22px; line-height: 2; color: var(--text-2); }
+.explain-list li { margin-bottom: 4px; }
+
+/* 知识弹窗 */
+.trivia-mask {
+    position: fixed; inset: 0;
+    background: rgba(20, 12, 50, 0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2000;
+    padding: 20px;
+    animation: maskIn 0.25s ease;
+}
+@keyframes maskIn { from { opacity: 0; } to { opacity: 1; } }
+.trivia-card {
+    background: var(--bg-card);
+    border-radius: var(--r-xl);
+    padding: 32px 28px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    border: 3px solid var(--c-sun);
+    position: relative;
+    animation: popIn 0.35s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+.trivia-close {
+    position: absolute; top: 10px; right: 14px;
+    background: var(--bg-soft);
+    border: 2px solid var(--border-2);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--text-2);
+    transition: transform 0.15s;
+}
+.trivia-close:hover { transform: rotate(90deg); }
+.trivia-icon {
+    font-size: 4rem;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 4px 12px rgba(255, 213, 107, 0.5));
+}
+.trivia-card h3 {
+    font-size: 1.6rem;
+    color: var(--c-grape-d);
+    margin: 0 0 12px;
+}
+.trivia-card p {
+    color: var(--text-2);
+    line-height: 1.8;
+    font-size: 1rem;
+    margin: 0;
+}

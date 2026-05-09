@@ -4,54 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎹 指尖钢琴家 - 11_Game</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/theme.css">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .home-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 30px;
-            color: #fff;
-            text-decoration: none;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        .home-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateX(5px);
-        }
-    </style>
 </head>
 <body>
+    <div class="clouds-bg"></div>
+
+    <a href="../index.html" class="home-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        返回首页
+    </a>
+
     <div class="container">
-        <!-- 返回首页按钮 -->
-        <a href="../index.html" class="home-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            返回首页
-        </a>
         <header>
-            <h1>🎹 指尖钢琴家</h1>
-            <p class="subtitle">按下键盘字母键开始弹奏</p>
+            <h1 class="h-display"><span class="text-rainbow">🎹 指尖钢琴家</span></h1>
+            <p class="subtitle">按下键盘字母键开始弹奏 · 跟弹模式接住下落的音符雨！</p>
         </header>
+
+        <!-- 跟弹模式得分条 -->
+        <div class="hud" id="hud" hidden>
+            <div class="hud-cell hud-combo">
+                <span class="hud-label">连击</span>
+                <span class="hud-value" id="comboValue">0</span>
+            </div>
+            <div class="hud-cell hud-score">
+                <span class="hud-label">得分</span>
+                <span class="hud-value" id="scoreValue">0</span>
+            </div>
+            <div class="hud-cell hud-acc">
+                <span class="hud-label">命中</span>
+                <span class="hud-value"><span id="hitCount">0</span>/<span id="totalCount">0</span></span>
+            </div>
+        </div>
 
         <div class="main-content">
             <!-- 左侧控制面板 -->
-            <div class="control-panel">
+            <div class="control-panel card">
                 <div class="panel-section">
                     <h3>🎵 经典曲目</h3>
                     <div class="song-list">
@@ -82,7 +70,7 @@
                     <h3>🎮 演奏模式</h3>
                     <div class="mode-buttons">
                         <button id="freePlay" class="mode-btn active">自由弹奏</button>
-                        <button id="followMode" class="mode-btn">跟随演奏</button>
+                        <button id="followMode" class="mode-btn">跟弹挑战</button>
                     </div>
                 </div>
 
@@ -98,15 +86,15 @@
                 <div class="panel-section">
                     <h3>⌨️ 键盘映射</h3>
                     <div class="keyboard-hint">
-                        <p>白键: A S D F G H J K L</p>
-                        <p>黑键: W E T Y U O P</p>
-                        <p>低音: Z X C V B N M</p>
+                        <p><b>白键</b> A S D F G H J K L</p>
+                        <p><b>黑键</b> W E T Y U O P</p>
+                        <p><b>低音</b> Z X C V B N M</p>
                     </div>
                 </div>
             </div>
 
-            <!-- 五线谱显示区域 -->
-            <div class="staff-container">
+            <!-- 五线谱 / 音符雨 -->
+            <div class="staff-container card">
                 <div class="staff-header">
                     <h3>🎼 五线谱</h3>
                     <div class="song-info" id="songInfo">
@@ -116,18 +104,46 @@
                 </div>
                 <canvas id="staffCanvas"></canvas>
                 <div class="staff-controls">
-                    <button id="playBtn" class="control-btn">▶ 播放</button>
-                    <button id="pauseBtn" class="control-btn">⏸ 暂停</button>
-                    <button id="stopBtn" class="control-btn">⏹ 停止</button>
-                    <button id="resetBtn" class="control-btn">🔄 重置</button>
+                    <button id="playBtn" class="control-btn btn-mint">▶ 播放</button>
+                    <button id="pauseBtn" class="control-btn btn-sun">⏸ 暂停</button>
+                    <button id="stopBtn" class="control-btn btn-sky">⏹ 停止</button>
+                    <button id="resetBtn" class="control-btn btn-grape">🔄 重置</button>
                 </div>
             </div>
 
-            <!-- 钢琴键盘 -->
-            <div class="piano-container">
+            <!-- 钢琴键盘 + 音符雨 -->
+            <div class="piano-container card">
+                <div class="rain-stage" id="rainStage">
+                    <canvas id="rainCanvas"></canvas>
+                    <div class="hit-line"></div>
+                </div>
                 <div class="piano" id="piano">
                     <!-- 钢琴键将由JavaScript生成 -->
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 评分 toast 容器 -->
+    <div class="judge-toast" id="judgeToast"></div>
+
+    <!-- 结算页 -->
+    <div class="result-modal" id="resultModal" hidden>
+        <div class="result-card card">
+            <h2 class="h-display">🎉 演奏完成！</h2>
+            <div class="result-stars" id="resultStars">
+                <span class="star">★</span><span class="star">★</span><span class="star">★</span>
+            </div>
+            <div class="result-rows">
+                <div><span>最终得分</span><b id="rScore">0</b></div>
+                <div><span>最高连击</span><b id="rCombo">0</b></div>
+                <div><span class="badge badge-perfect">Perfect</span><b id="rPerfect">0</b></div>
+                <div><span class="badge badge-good">Good</span><b id="rGood">0</b></div>
+                <div><span class="badge badge-miss">Miss</span><b id="rMiss">0</b></div>
+            </div>
+            <div class="result-actions">
+                <button class="btn btn-primary" id="rRetry">再来一次</button>
+                <button class="btn btn-secondary" id="rClose">关闭</button>
             </div>
         </div>
     </div>

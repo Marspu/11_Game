@@ -4,48 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>颜色魔法学院 - 儿童颜色混合实验室</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../shared/theme.css">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .home-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 30px;
-            color: #fff;
-            text-decoration: none;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        .home-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateX(5px);
-        }
-    </style>
 </head>
 <body>
+    <div class="clouds-bg"></div>
+
+    <!-- 返回首页按钮（使用共享组件） -->
+    <a class="home-btn" href="../index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        返回首页
+    </a>
+
     <div class="container">
-        <!-- 返回首页按钮 -->
-        <a href="../index.html" class="home-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            返回首页
-        </a>
         <!-- 头部 -->
         <header class="header">
-            <h1>🎨 颜色魔法学院</h1>
+            <h1><span class="text-rainbow">颜色魔法学院</span> 🎨</h1>
             <p class="subtitle">探索颜色混合的奥秘！</p>
         </header>
 
@@ -53,15 +27,19 @@
         <nav class="mode-selector">
             <button class="mode-btn active" data-mode="additive">
                 <span class="icon">💡</span>
-                <span>光的魔法（加色混合）</span>
+                <span>光的魔法</span>
             </button>
             <button class="mode-btn" data-mode="subtractive">
                 <span class="icon">🎨</span>
-                <span>颜料的魔法（减色混合）</span>
+                <span>颜料魔法</span>
             </button>
             <button class="mode-btn" data-mode="custom">
                 <span class="icon">✨</span>
-                <span>自由混合实验室</span>
+                <span>自由混合</span>
+            </button>
+            <button class="mode-btn" data-mode="challenge">
+                <span class="icon">🏆</span>
+                <span>闯关挑战</span>
             </button>
         </nav>
 
@@ -75,8 +53,8 @@
                 </div>
             </section>
 
-            <!-- 实验区域 -->
-            <section class="lab-section">
+            <!-- 实验区域（加色/减色/自由混合） -->
+            <section class="lab-section" id="lab-section">
                 <div class="lab-container">
                     <!-- 颜色选择器 -->
                     <div class="color-controls" id="standard-controls">
@@ -85,27 +63,27 @@
                                 <span class="color-dot red"></span>
                                 <span id="red-label">红光</span>
                             </label>
-                            <input type="range" id="red-slider" class="color-slider" 
+                            <input type="range" id="red-slider" class="color-slider"
                                    min="0" max="100" value="0" data-color="red">
                             <span class="slider-value" id="red-value">0%</span>
                         </div>
-                        
+
                         <div class="color-slider-group">
                             <label class="color-label">
                                 <span class="color-dot green"></span>
                                 <span id="green-label">绿光</span>
                             </label>
-                            <input type="range" id="green-slider" class="color-slider" 
+                            <input type="range" id="green-slider" class="color-slider"
                                    min="0" max="100" value="0" data-color="green">
                             <span class="slider-value" id="green-value">0%</span>
                         </div>
-                        
+
                         <div class="color-slider-group">
                             <label class="color-label">
                                 <span class="color-dot blue"></span>
                                 <span id="blue-label">蓝光</span>
                             </label>
-                            <input type="range" id="blue-slider" class="color-slider" 
+                            <input type="range" id="blue-slider" class="color-slider"
                                    min="0" max="100" value="0" data-color="blue">
                             <span class="slider-value" id="blue-value">0%</span>
                         </div>
@@ -115,8 +93,7 @@
                     <div class="custom-controls hidden" id="custom-controls">
                         <div class="custom-mix-container">
                             <h3 class="custom-title">🎨 颜色混合实验室</h3>
-                            
-                            <!-- 颜色数量选择 -->
+
                             <div class="color-count-selector">
                                 <button class="color-count-btn active" data-count="2">
                                     <span class="count-icon">🎨</span>
@@ -127,8 +104,7 @@
                                     <span>三种颜色混合</span>
                                 </button>
                             </div>
-                            
-                            <!-- 颜色 A -->
+
                             <div class="color-picker-group">
                                 <div class="color-picker-row">
                                     <label class="custom-label color-a-label">
@@ -139,14 +115,13 @@
                                 </div>
                                 <div class="mix-ratio-control">
                                     <span class="ratio-label">比例</span>
-                                    <input type="range" id="ratio-a-slider" class="ratio-slider" 
+                                    <input type="range" id="ratio-a-slider" class="ratio-slider"
                                            min="0" max="100" value="50">
                                     <span class="ratio-value" id="ratio-a-value">50%</span>
                                 </div>
                                 <div class="color-preview-large" id="color-a-preview" style="background: #ffff00"></div>
                             </div>
 
-                            <!-- 颜色 B -->
                             <div class="color-picker-group">
                                 <div class="color-picker-row">
                                     <label class="custom-label color-b-label">
@@ -157,14 +132,13 @@
                                 </div>
                                 <div class="mix-ratio-control">
                                     <span class="ratio-label">比例</span>
-                                    <input type="range" id="ratio-b-slider" class="ratio-slider" 
+                                    <input type="range" id="ratio-b-slider" class="ratio-slider"
                                            min="0" max="100" value="50">
                                     <span class="ratio-value" id="ratio-b-value">50%</span>
                                 </div>
                                 <div class="color-preview-large" id="color-b-preview" style="background: #000000"></div>
                             </div>
 
-                            <!-- 颜色 C -->
                             <div class="color-picker-group hidden" id="color-c-group">
                                 <div class="color-picker-row">
                                     <label class="custom-label color-c-label">
@@ -175,26 +149,24 @@
                                 </div>
                                 <div class="mix-ratio-control">
                                     <span class="ratio-label">比例</span>
-                                    <input type="range" id="ratio-c-slider" class="ratio-slider" 
+                                    <input type="range" id="ratio-c-slider" class="ratio-slider"
                                            min="0" max="100" value="0">
                                     <span class="ratio-value" id="ratio-c-value">0%</span>
                                 </div>
                                 <div class="color-preview-large" id="color-c-preview" style="background: #ffffff"></div>
                             </div>
 
-                            <!-- 混合符号 -->
                             <div class="mix-formula">
                                 <span class="formula-text">混合公式：</span>
                                 <span class="formula-colors">
-                                    <span class="formula-color-dot" id="formula-dot-a"></span> + 
-                                    <span class="formula-color-dot" id="formula-dot-b"></span> + 
+                                    <span class="formula-color-dot" id="formula-dot-a"></span> +
+                                    <span class="formula-color-dot" id="formula-dot-b"></span> +
                                     <span class="formula-color-dot" id="formula-dot-c"></span>
                                 </span>
                                 <span class="formula-arrow">→</span>
                                 <span class="formula-result" id="formula-result-dot"></span>
                             </div>
 
-                            <!-- 混合模式选择 -->
                             <div class="blend-mode-selector">
                                 <span>混合模式：</span>
                                 <select id="blend-mode-select" class="blend-select">
@@ -214,15 +186,13 @@
                             <div class="overlay-text" id="result-color-name">黑色</div>
                         </div>
                         <p class="mixing-result" id="mixing-result">调整滑块来混合颜色！</p>
-                        
-                        <!-- 生活物品匹配显示 -->
+
                         <div class="real-world-match" id="real-world-match">
                             <div class="match-emoji" id="match-emoji">🌑</div>
                             <div class="match-name" id="match-name">像夜空一样黑</div>
                             <div class="match-description" id="match-description">这是黑暗的颜色</div>
                         </div>
-                        
-                        <!-- 自定义模式下的额外信息 -->
+
                         <div class="custom-result-info hidden" id="custom-result-info">
                             <div class="result-formula" id="result-formula"></div>
                             <div class="color-values" id="color-values"></div>
@@ -231,12 +201,52 @@
                 </div>
             </section>
 
+            <!-- 闯关挑战模式 -->
+            <section class="challenge-section hidden" id="challenge-section">
+                <!-- 关卡列表 -->
+                <div class="challenge-levels" id="challenge-levels">
+                    <div class="challenge-stats" id="challenge-stats"></div>
+                    <div class="achievement-badge hidden" id="achievement-badge">
+                        <div class="badge-icon">🏅</div>
+                        <div class="badge-title">调色大师</div>
+                        <div class="badge-desc">你完成了所有关卡！</div>
+                    </div>
+                    <div class="level-grid" id="level-grid"></div>
+                </div>
+
+                <!-- 关卡游戏界面 -->
+                <div class="challenge-play hidden" id="challenge-play">
+                    <button class="challenge-back btn btn-secondary" id="challenge-back">← 返回关卡</button>
+                    <div class="challenge-header">
+                        <h3 id="challenge-level-title">关卡 1 · 暖暖橙</h3>
+                        <p id="challenge-level-hint">混合红色和黄色，调出目标颜色！</p>
+                    </div>
+                    <div class="challenge-swatches">
+                        <div class="swatch-box">
+                            <div class="swatch-label">目标颜色</div>
+                            <div class="target-swatch" id="target-swatch"></div>
+                            <div class="swatch-hex" id="target-hex">#FF8C42</div>
+                        </div>
+                        <div class="vs-label">VS</div>
+                        <div class="swatch-box">
+                            <div class="swatch-label">你的颜色</div>
+                            <div class="current-swatch" id="current-swatch"></div>
+                            <div class="swatch-hex" id="current-hex">#000000</div>
+                        </div>
+                    </div>
+                    <div class="channel-controls" id="channel-controls"></div>
+                    <div class="challenge-actions">
+                        <button class="btn btn-secondary" id="challenge-reset">🔄 重置</button>
+                        <button class="btn btn-primary" id="challenge-submit">✨ 提交答案</button>
+                    </div>
+                    <div class="challenge-result hidden" id="challenge-result"></div>
+                </div>
+            </section>
+
             <!-- 预设颜色按钮 -->
             <section class="preset-section" id="preset-section">
                 <h3>🌈 试试这些颜色组合！</h3>
-                <div class="preset-buttons" id="preset-buttons">
-                    <!-- 由 JavaScript 动态生成 -->
-                </div>
+                <div class="preset-buttons" id="preset-buttons"></div>
             </section>
 
             <!-- 颜色轮 -->
@@ -244,18 +254,14 @@
                 <h3>🎯 颜色轮</h3>
                 <div class="color-wheel-container">
                     <canvas id="color-wheel" width="300" height="300"></canvas>
-                    <div class="color-wheel-legend" id="color-legend">
-                        <!-- 由 JavaScript 动态生成 -->
-                    </div>
+                    <div class="color-wheel-legend" id="color-legend"></div>
                 </div>
             </section>
 
             <!-- 知识卡片 -->
             <section class="knowledge-section" id="knowledge-section">
                 <h3>📚 颜色小知识</h3>
-                <div class="knowledge-cards" id="knowledge-cards">
-                    <!-- 由 JavaScript 动态生成 -->
-                </div>
+                <div class="knowledge-cards" id="knowledge-cards"></div>
             </section>
 
             <!-- 小测验 -->
@@ -276,6 +282,9 @@
             <p>🌟 继续探索，小小科学家！🌟</p>
         </footer>
     </div>
+
+    <!-- 庆祝彩花容器 -->
+    <div class="confetti-container" id="confetti-container"></div>
 
     <script src="script.js"></script>
 </body>

@@ -11,7 +11,7 @@
 
 // ==================== 全局状态 ====================
 const state = {
-    currentMode: 'additive', // 'additive', 'subtractive', 或 'custom'
+    currentMode: 'additive', // 'additive', 'subtractive', 'custom', 或 'challenge'
     colors: {
         additive: { red: 0, green: 0, blue: 0 },
         subtractive: { cyan: 0, magenta: 0, yellow: 0 }
@@ -411,14 +411,41 @@ function setupModeSwitching() {
             if (mode === state.currentMode) return;
             
             state.currentMode = mode;
-            
+
             // 更新按钮状态
             elements.modeButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
+
             // 更新界面
             updateModeUI();
-            
+
+            const labSection = document.getElementById('lab-section');
+            const challengeSection = document.getElementById('challenge-section');
+            const presetSection = document.getElementById('preset-section');
+            const introSection = document.getElementById('intro-section');
+
+            if (mode === 'challenge') {
+                // 进入闯关模式：隐藏其它实验区，仅展示挑战界面
+                labSection.classList.add('hidden');
+                presetSection.classList.add('hidden');
+                elements.colorWheelSection.classList.add('hidden');
+                elements.knowledgeSection.classList.add('hidden');
+                elements.quizSection.classList.add('hidden');
+                introSection.classList.add('hidden');
+                challengeSection.classList.remove('hidden');
+                renderChallengeLevels();
+                showChallengeList();
+                return;
+            }
+
+            // 离开闯关模式：恢复原有布局
+            labSection.classList.remove('hidden');
+            presetSection.classList.remove('hidden');
+            introSection.classList.remove('hidden');
+            elements.knowledgeSection.classList.remove('hidden');
+            elements.quizSection.classList.remove('hidden');
+            challengeSection.classList.add('hidden');
+
             // 根据模式显示/隐藏控制
             if (mode === 'custom') {
                 elements.standardControls.classList.add('hidden');
@@ -428,14 +455,14 @@ function setupModeSwitching() {
                 elements.standardControls.classList.remove('hidden');
                 elements.customControls.classList.add('hidden');
                 elements.customResultInfo.classList.add('hidden');
-                
+
                 // 重置滑块
                 resetSliders();
             }
-            
+
             // 更新预设按钮
             setupPresetButtons();
-            
+
             // 更新颜色轮和图例
             if (mode !== 'custom') {
                 elements.colorWheelSection.classList.remove('hidden');
@@ -444,13 +471,13 @@ function setupModeSwitching() {
             } else {
                 elements.colorWheelSection.classList.add('hidden');
             }
-            
+
             // 更新知识卡片
             renderKnowledgeCards();
-            
+
             // 加载新测验
             loadQuiz();
-            
+
             // 更新显示
             updateDisplay();
         });
@@ -460,7 +487,13 @@ function setupModeSwitching() {
 function updateModeUI() {
     const isAdditive = state.currentMode === 'additive';
     const isCustom = state.currentMode === 'custom';
-    
+    const isChallenge = state.currentMode === 'challenge';
+
+    if (isChallenge) {
+        // 闯关模式自有标题，由渲染函数管理
+        return;
+    }
+
     if (isCustom) {
         elements.modeTitle.textContent = '✨ 自由混合实验室';
         elements.modeDescription.textContent = '选择任意三种颜色，调节比例，创造属于你的独特颜色！';
@@ -1552,6 +1585,350 @@ updateCustomDisplay = function() {
 
 // 覆盖原有的 updateDisplay 函数
 updateDisplay = updateDisplayWithMatch;
+
+// ==================== 闯关挑战模式 ====================
+const CHALLENGE_STORAGE_KEY = 'color_mixing_progress_v1';
+
+const challengeLevels = [
+    { id: 1,  name: '暖暖橙',   target: '#FF8C42', mode: 'additive',    hint: '试试红光 + 黄光，再调一点点比例！' },
+    { id: 2,  name: '薄荷绿',   target: '#A8E6CF', mode: 'additive',    hint: '绿光多一点，再加一些蓝光、红光会更柔和。' },
+    { id: 3,  name: '天空蓝',   target: '#7AB8E8', mode: 'additive',    hint: '蓝光为主，加一些绿光和红光让颜色更亮。' },
+    { id: 4,  name: '葡萄紫',   target: '#A879D8', mode: 'subtractive', hint: '需要青色和品红，减少黄色。' },
+    { id: 5,  name: '蜜桃粉',   target: '#FFB4A2', mode: 'subtractive', hint: '一点品红，加一点黄色，青色不要多。' },
+    { id: 6,  name: '森林绿',   target: '#2D7A3E', mode: 'subtractive', hint: '青色和黄色要多，并加一些品红让它变深。' },
+    { id: 7,  name: '夕阳红',   target: '#E8553D', mode: 'additive',    hint: '红光最多，配一点点绿光。' },
+    { id: 8,  name: '海洋蓝',   target: '#1E5F8E', mode: 'subtractive', hint: '青色和品红多一些，少量黄色。' },
+    { id: 9,  name: '丁香紫',   target: '#C8A2C8', mode: 'additive',    hint: '红光和蓝光均匀，少加一点绿光。' },
+    { id: 10, name: '金黄色',   target: '#FFD56B', mode: 'subtractive', hint: '黄色拉满，加一点品红即可。' }
+];
+
+const challengeState = {
+    progress: {},          // { [levelId]: { stars: 0..3, completed: bool } }
+    currentLevelId: null,
+    channels: { c1: 0, c2: 0, c3: 0 } // 加色：red/green/blue；减色：cyan/magenta/yellow
+};
+
+function loadChallengeProgress() {
+    try {
+        const raw = localStorage.getItem(CHALLENGE_STORAGE_KEY);
+        if (raw) {
+            const data = JSON.parse(raw);
+            challengeState.progress = data.progress || {};
+        }
+    } catch (e) {
+        challengeState.progress = {};
+    }
+}
+
+function saveChallengeProgress() {
+    try {
+        localStorage.setItem(CHALLENGE_STORAGE_KEY, JSON.stringify({
+            progress: challengeState.progress,
+            updated: Date.now()
+        }));
+    } catch (e) { /* ignore */ }
+}
+
+function getLevelById(id) {
+    return challengeLevels.find(l => l.id === id);
+}
+
+function isLevelUnlocked(level) {
+    if (level.id === 1) return true;
+    const prev = challengeState.progress[level.id - 1];
+    return !!(prev && prev.completed);
+}
+
+function totalStars() {
+    return Object.values(challengeState.progress).reduce((s, p) => s + (p.stars || 0), 0);
+}
+function completedCount() {
+    return Object.values(challengeState.progress).filter(p => p.completed).length;
+}
+
+// 渲染关卡列表
+function renderChallengeLevels() {
+    const grid = document.getElementById('level-grid');
+    const stats = document.getElementById('challenge-stats');
+    const badge = document.getElementById('achievement-badge');
+    if (!grid) return;
+
+    const stars = totalStars();
+    const done = completedCount();
+    const maxStars = challengeLevels.length * 3;
+
+    stats.innerHTML = `
+        <div class="stat-item">
+            <span class="stat-icon">⭐</span>
+            <div>
+                <div class="stat-value">${stars} / ${maxStars}</div>
+                <div class="stat-label">累计星星</div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <span class="stat-icon">🎯</span>
+            <div>
+                <div class="stat-value">${done} / ${challengeLevels.length}</div>
+                <div class="stat-label">通关数</div>
+            </div>
+        </div>
+    `;
+
+    if (done === challengeLevels.length) {
+        badge.classList.remove('hidden');
+    } else {
+        badge.classList.add('hidden');
+    }
+
+    grid.innerHTML = challengeLevels.map(lv => {
+        const p = challengeState.progress[lv.id] || { stars: 0, completed: false };
+        const unlocked = isLevelUnlocked(lv);
+        const starsHtml = [1,2,3].map(i =>
+            `<span class="${i <= p.stars ? 'star-on' : 'star-off'}">★</span>`
+        ).join('');
+        const modeTag = lv.mode === 'additive' ? '光的混合' : '颜料混合';
+        return `
+            <div class="level-card ${unlocked ? '' : 'locked'} ${p.completed ? 'completed' : ''}" data-id="${lv.id}">
+                ${unlocked ? '' : '<div class="level-lock-overlay">🔒</div>'}
+                <div class="level-number">关卡 ${lv.id}</div>
+                <div class="level-name">${lv.name}</div>
+                <div class="level-color-preview" style="background: ${lv.target}"></div>
+                <div class="level-mode-tag">${modeTag}</div>
+                <div class="level-stars">${starsHtml}</div>
+            </div>
+        `;
+    }).join('');
+
+    grid.querySelectorAll('.level-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const id = parseInt(card.dataset.id);
+            const lv = getLevelById(id);
+            if (!isLevelUnlocked(lv)) return;
+            startChallengeLevel(id);
+        });
+    });
+}
+
+function showChallengeList() {
+    document.getElementById('challenge-levels').classList.remove('hidden');
+    document.getElementById('challenge-play').classList.add('hidden');
+    renderChallengeLevels();
+}
+
+function showChallengePlay() {
+    document.getElementById('challenge-levels').classList.add('hidden');
+    document.getElementById('challenge-play').classList.remove('hidden');
+}
+
+function startChallengeLevel(id) {
+    challengeState.currentLevelId = id;
+    challengeState.channels = { c1: 0, c2: 0, c3: 0 };
+    const lv = getLevelById(id);
+
+    document.getElementById('challenge-level-title').textContent = `关卡 ${lv.id} · ${lv.name}`;
+    document.getElementById('challenge-level-hint').textContent = lv.hint;
+    document.getElementById('target-swatch').style.background = lv.target;
+    document.getElementById('target-hex').textContent = lv.target.toUpperCase();
+
+    renderChannelControls(lv.mode);
+    updateChallengeCurrentColor();
+    document.getElementById('challenge-result').classList.add('hidden');
+    document.getElementById('challenge-result').className = 'challenge-result hidden';
+    showChallengePlay();
+}
+
+function renderChannelControls(mode) {
+    const channels = mode === 'additive'
+        ? [
+            { key: 'c1', name: '红光', dotClass: 'red',   gradient: 'linear-gradient(to right, #fff8ee, #ff6b6b)' },
+            { key: 'c2', name: '绿光', dotClass: 'green', gradient: 'linear-gradient(to right, #fff8ee, #51d88a)' },
+            { key: 'c3', name: '蓝光', dotClass: 'blue',  gradient: 'linear-gradient(to right, #fff8ee, #5dade2)' }
+          ]
+        : [
+            { key: 'c1', name: '青色', dotClass: 'cyan',    gradient: 'linear-gradient(to right, #fff, #4ed4d2)' },
+            { key: 'c2', name: '品红', dotClass: 'magenta', gradient: 'linear-gradient(to right, #fff, #e879b5)' },
+            { key: 'c3', name: '黄色', dotClass: 'yellow',  gradient: 'linear-gradient(to right, #fff, #ffd56b)' }
+          ];
+
+    const wrap = document.getElementById('channel-controls');
+    wrap.innerHTML = channels.map(ch => `
+        <div class="channel-row">
+            <div class="ch-label"><span class="ch-dot color-dot ${ch.dotClass}"></span><span>${ch.name}</span></div>
+            <input type="range" min="0" max="100" value="0" data-key="${ch.key}" class="ch-slider" style="background: ${ch.gradient}">
+            <span class="ch-value" data-for="${ch.key}">0%</span>
+        </div>
+    `).join('');
+
+    wrap.querySelectorAll('.ch-slider').forEach(sl => {
+        sl.addEventListener('input', e => {
+            const key = e.target.dataset.key;
+            challengeState.channels[key] = parseInt(e.target.value);
+            wrap.querySelector(`[data-for="${key}"]`).textContent = e.target.value + '%';
+            updateChallengeCurrentColor();
+        });
+    });
+}
+
+function challengeCurrentRgb() {
+    const lv = getLevelById(challengeState.currentLevelId);
+    const { c1, c2, c3 } = challengeState.channels;
+    if (lv.mode === 'additive') {
+        return {
+            r: Math.round(c1 * 2.55),
+            g: Math.round(c2 * 2.55),
+            b: Math.round(c3 * 2.55)
+        };
+    } else {
+        // 减色：c1=cyan, c2=magenta, c3=yellow
+        return {
+            r: Math.round(255 * (1 - c1 / 100)),
+            g: Math.round(255 * (1 - c2 / 100)),
+            b: Math.round(255 * (1 - c3 / 100))
+        };
+    }
+}
+
+function updateChallengeCurrentColor() {
+    const rgb = challengeCurrentRgb();
+    const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+    document.getElementById('current-swatch').style.background = hex;
+    document.getElementById('current-hex').textContent = hex.toUpperCase();
+}
+
+// ΔE 颜色相似度（基于 Lab 色空间）
+function rgbToLab(r, g, b) {
+    // sRGB -> linear
+    let R = r / 255, G = g / 255, B = b / 255;
+    R = R > 0.04045 ? Math.pow((R + 0.055) / 1.055, 2.4) : R / 12.92;
+    G = G > 0.04045 ? Math.pow((G + 0.055) / 1.055, 2.4) : G / 12.92;
+    B = B > 0.04045 ? Math.pow((B + 0.055) / 1.055, 2.4) : B / 12.92;
+    // linear RGB -> XYZ (D65)
+    let X = (R * 0.4124 + G * 0.3576 + B * 0.1805) / 0.95047;
+    let Y = (R * 0.2126 + G * 0.7152 + B * 0.0722) / 1.0;
+    let Z = (R * 0.0193 + G * 0.1192 + B * 0.9505) / 1.08883;
+    const f = t => t > 0.008856 ? Math.pow(t, 1/3) : (7.787 * t + 16/116);
+    const fx = f(X), fy = f(Y), fz = f(Z);
+    return {
+        L: 116 * fy - 16,
+        a: 500 * (fx - fy),
+        b: 200 * (fy - fz)
+    };
+}
+
+function deltaE(rgb1, rgb2) {
+    const a = rgbToLab(rgb1.r, rgb1.g, rgb1.b);
+    const b = rgbToLab(rgb2.r, rgb2.g, rgb2.b);
+    return Math.sqrt(
+        Math.pow(a.L - b.L, 2) +
+        Math.pow(a.a - b.a, 2) +
+        Math.pow(a.b - b.b, 2)
+    );
+}
+
+function ratingFromDeltaE(de) {
+    if (de < 5)  return 3;
+    if (de < 15) return 2;
+    if (de < 30) return 1;
+    return 0;
+}
+
+function submitChallenge() {
+    const lv = getLevelById(challengeState.currentLevelId);
+    const target = hexToRgb(lv.target);
+    const current = challengeCurrentRgb();
+    const de = deltaE(current, target);
+    const stars = ratingFromDeltaE(de);
+
+    const resultBox = document.getElementById('challenge-result');
+    resultBox.classList.remove('hidden');
+
+    if (stars > 0) {
+        // 保存成绩（取历史最高）
+        const prev = challengeState.progress[lv.id] || { stars: 0, completed: false };
+        const best = Math.max(prev.stars || 0, stars);
+        challengeState.progress[lv.id] = { stars: best, completed: true };
+        saveChallengeProgress();
+
+        const starsHtml = [1,2,3].map(i =>
+            `<span style="color:${i <= stars ? '#e8a93e' : '#e8d9bf'}">★</span>`
+        ).join('');
+
+        const allDone = completedCount() === challengeLevels.length;
+        const nextLv = challengeLevels.find(l => l.id === lv.id + 1);
+
+        resultBox.className = 'challenge-result pass';
+        resultBox.innerHTML = `
+            <div style="font-size:1.4rem;">🎉 通关成功！</div>
+            <div class="result-stars">${starsHtml}</div>
+            <div class="result-detail">颜色差异 ΔE ≈ ${de.toFixed(2)}（越小越接近）</div>
+            ${allDone
+                ? '<div class="result-detail" style="margin-top:8px;">🏅 你解锁了"调色大师"成就！</div>'
+                : nextLv
+                    ? `<button class="btn btn-primary next-btn" id="goto-next-level">下一关 →</button>`
+                    : ''}
+            <div style="margin-top:8px;"><button class="btn btn-secondary" id="back-to-list">返回关卡列表</button></div>
+        `;
+        launchConfetti(stars === 3 ? 80 : stars === 2 ? 50 : 30);
+
+        const nextBtn = document.getElementById('goto-next-level');
+        if (nextBtn) nextBtn.addEventListener('click', () => startChallengeLevel(lv.id + 1));
+        document.getElementById('back-to-list').addEventListener('click', showChallengeList);
+    } else {
+        resultBox.className = 'challenge-result fail';
+        resultBox.innerHTML = `
+            <div style="font-size:1.2rem;">差一点点！再试试 💪</div>
+            <div class="result-detail">颜色差异 ΔE ≈ ${de.toFixed(2)}，需要小于 30 才能通关</div>
+            <div class="result-detail">提示：${lv.hint}</div>
+        `;
+    }
+}
+
+function resetChallengeChannels() {
+    challengeState.channels = { c1: 0, c2: 0, c3: 0 };
+    document.querySelectorAll('#channel-controls .ch-slider').forEach(sl => sl.value = 0);
+    document.querySelectorAll('#channel-controls .ch-value').forEach(v => v.textContent = '0%');
+    updateChallengeCurrentColor();
+    document.getElementById('challenge-result').classList.add('hidden');
+}
+
+// 彩花效果
+function launchConfetti(count) {
+    const container = document.getElementById('confetti-container');
+    if (!container) return;
+    const colors = ['#ffb4a2', '#a8e6cf', '#a0d8f1', '#ffd56b', '#c5a3ff', '#ff8a80'];
+    for (let i = 0; i < count; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        const left = Math.random() * 100;
+        const dx = (Math.random() - 0.5) * 200;
+        const duration = 2.5 + Math.random() * 2;
+        const delay = Math.random() * 0.4;
+        piece.style.left = left + 'vw';
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = duration + 's';
+        piece.style.animationDelay = delay + 's';
+        piece.style.setProperty('--dx', dx + 'px');
+        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+        container.appendChild(piece);
+        setTimeout(() => piece.remove(), (duration + delay) * 1000 + 100);
+    }
+}
+
+// 绑定挑战面板按钮
+function setupChallengeBindings() {
+    const back = document.getElementById('challenge-back');
+    const reset = document.getElementById('challenge-reset');
+    const submit = document.getElementById('challenge-submit');
+    if (back)   back.addEventListener('click', showChallengeList);
+    if (reset)  reset.addEventListener('click', resetChallengeChannels);
+    if (submit) submit.addEventListener('click', submitChallenge);
+}
+
+// 初始化挂钩：在 DOMContentLoaded 后执行
+document.addEventListener('DOMContentLoaded', () => {
+    loadChallengeProgress();
+    setupChallengeBindings();
+});
 
 // ==================== 启动应用 ====================
 document.addEventListener('DOMContentLoaded', init);

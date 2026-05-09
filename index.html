@@ -3,408 +3,455 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 11_Game - 小游戏合集</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>🌈 11_Game · 11小朋友的奇妙游戏屋</title>
+    <link rel="stylesheet" href="shared/theme.css">
     <style>
-        :root {
-            --primary: #6366f1;
-            --secondary: #a855f7;
-            --accent: #ec4899;
-            --bg: #0f172a;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-main: #f8fafc;
-            --text-dim: #94a3b8;
-        }
+        body { overflow-x: hidden; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
+        /* 装饰星星 */
+        .deco-stars {
+            position: fixed; inset: 0; z-index: -1; overflow: hidden;
+            pointer-events: none;
         }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* 动态网格背景 */
-        .bg-animate {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #0f172a 100%);
-            overflow: hidden;
-        }
-
-        .blob {
+        .star {
             position: absolute;
-            width: 500px;
-            height: 500px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            filter: blur(80px);
-            border-radius: 50%;
-            opacity: 0.15;
-            animation: move 20s infinite alternate;
+            font-size: 22px;
+            opacity: 0.5;
+            animation: twinkle 3s ease-in-out infinite;
         }
-
-        .blob-2 {
-            background: linear-gradient(135deg, var(--secondary), var(--accent));
-            width: 400px;
-            height: 400px;
-            right: -100px;
-            top: -100px;
-            animation-delay: -5s;
-        }
-
-        @keyframes move {
-            from { transform: translate(-10%, -10%) scale(1); }
-            to { transform: translate(20%, 20%) scale(1.2); }
+        @keyframes twinkle {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+            50%      { transform: scale(1.3) rotate(20deg); opacity: 1; }
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 60px 24px 40px;
         }
 
-        /* 头部设计 */
-        .header {
-            text-align: center;
-            margin-bottom: 80px;
-            position: relative;
-        }
-
-        .hero-section {
-            display: flex;
-            flex-direction: column;
+        /* 顶部导航徽章 */
+        .top-badge {
+            display: inline-flex;
             align-items: center;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .hero-image-wrapper {
-            position: relative;
-            padding: 20px;
-        }
-
-        .hero-image-wrapper::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 30px;
-            padding: 3px;
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0.5;
-        }
-
-        .hero-image {
-            max-width: 450px;
-            width: 100%;
-            border-radius: 25px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(1deg); }
-        }
-
-        .title-group h1 {
-            font-size: 4.5rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            background: linear-gradient(to right, #fff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            font-size: 1.25rem;
-            color: var(--primary);
+            gap: 8px;
+            padding: 8px 18px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-2);
+            border-radius: var(--r-pill);
+            font-family: var(--font-display);
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: var(--text-2);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 24px;
+        }
+        .top-badge .dot {
+            width: 8px; height: 8px;
+            background: var(--c-mint-d);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(76, 175, 133, 0.6);
+            animation: pulse 1.8s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 133, 0.6); }
+            70% { box-shadow: 0 0 0 8px rgba(76, 175, 133, 0); }
         }
 
-        .description {
-            max-width: 700px;
-            margin: 0 auto;
-            color: var(--text-dim);
-            line-height: 1.6;
-            font-size: 1.1rem;
-        }
-
-        /* 游戏网格 */
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 30px;
-        }
-
-        .game-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 24px;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
+        /* Hero */
+        .hero {
+            text-align: center;
             position: relative;
-            overflow: hidden;
+            margin-bottom: 60px;
         }
-
-        .game-card::after {
-            content: '';
+        .hero-image-wrap {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        .hero-image {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 8px solid #fff;
+            box-shadow: var(--shadow-lg);
+            animation: float 5s ease-in-out infinite;
+        }
+        .hero-emoji {
             position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s;
+            font-size: 38px;
+            animation: orbit 8s linear infinite;
+        }
+        .hero-emoji.e1 { top: -10px; left: -20px; animation-delay: 0s; }
+        .hero-emoji.e2 { top: 20px;  right: -30px; animation-delay: -2s; }
+        .hero-emoji.e3 { bottom: 0;  left: -30px; animation-delay: -4s; }
+        .hero-emoji.e4 { bottom: 20px; right: -10px; animation-delay: -6s; }
+        @keyframes orbit {
+            0%, 100% { transform: translateY(0) rotate(-10deg); }
+            50%      { transform: translateY(-15px) rotate(10deg); }
         }
 
-        .game-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            border-color: rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5);
-        }
-
-        .game-card:hover::after {
-            opacity: 1;
-        }
-
-        .card-icon {
-            font-size: 3.5rem;
-            margin-bottom: 24px;
-            background: rgba(255, 255, 255, 0.05);
-            width: 80px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 20px;
-            transition: transform 0.3s ease;
-        }
-
-        .game-card:hover .card-icon {
-            transform: scale(1.1) rotate(-5deg);
-        }
-
-        .card-content h3 {
-            font-size: 1.75rem;
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.6rem, 6vw, 4.5rem);
             font-weight: 700;
-            margin-bottom: 12px;
-            background: linear-gradient(to right, #fff, #cbd5e1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            margin: 0 0 16px;
+            letter-spacing: -0.02em;
         }
-
-        .card-content p {
-            color: var(--text-dim);
-            line-height: 1.6;
-            margin-bottom: 24px;
+        .hero h1 .gradient-text {
+            background: var(--grad-rainbow);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+                    background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow-shift 6s linear infinite;
+        }
+        .hero .lead {
+            max-width: 620px;
+            margin: 0 auto 28px;
+            color: var(--text-2);
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        .hero-stats {
+            display: inline-flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .stat-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-2);
+            border-radius: var(--r-pill);
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-2);
+            box-shadow: var(--shadow-sm);
+        }
+        .stat-pill strong {
+            color: var(--text-1);
             font-size: 1rem;
         }
 
+        /* Section title */
+        .section-title {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .section-title h2 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .section-title .hint {
+            color: var(--text-3);
+            font-size: 0.95rem;
+        }
+
+        /* 游戏卡片网格 */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 80px;
+        }
+        .game-card {
+            position: relative;
+            background: var(--bg-card);
+            border-radius: var(--r-xl);
+            padding: 28px 24px 24px;
+            text-decoration: none;
+            color: inherit;
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s, border-color 0.3s;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 140px; height: 140px;
+            border-radius: 50%;
+            opacity: 0.18;
+            transition: transform 0.4s ease, opacity 0.4s;
+        }
+        .card-color { background: var(--c-peach); }
+        .card-mint  { background: var(--c-mint); }
+        .card-sky   { background: var(--c-sky); }
+        .card-grape { background: var(--c-grape); }
+        .game-card.card-color::before { background: var(--c-peach); }
+        .game-card.card-mint::before  { background: var(--c-mint); }
+        .game-card.card-sky::before   { background: var(--c-sky); }
+        .game-card.card-grape::before { background: var(--c-grape); }
+
+        .game-card:hover {
+            transform: translateY(-8px) rotate(-0.5deg);
+            box-shadow: var(--shadow-lg);
+            border-color: currentColor;
+        }
+        .game-card:hover::before {
+            transform: scale(1.4);
+            opacity: 0.28;
+        }
+
+        .card-icon-wrap {
+            width: 76px; height: 76px;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+            position: relative;
+            z-index: 1;
+        }
+        .game-card.card-color .card-icon-wrap { background: linear-gradient(135deg, #ffd0c4, #ffb4a2); }
+        .game-card.card-mint  .card-icon-wrap { background: linear-gradient(135deg, #c5f1de, #a8e6cf); }
+        .game-card.card-sky   .card-icon-wrap { background: linear-gradient(135deg, #c4e7f7, #a0d8f1); }
+        .game-card.card-grape .card-icon-wrap { background: linear-gradient(135deg, #dcc7ff, #c5a3ff); }
+
+        .game-card:hover .card-icon-wrap {
+            transform: scale(1.08) rotate(-8deg);
+        }
+
+        .game-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin: 0 0 10px;
+            position: relative;
+            z-index: 1;
+        }
+        .game-card p {
+            color: var(--text-2);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin: 0 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .card-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            position: relative;
+            z-index: 1;
+        }
         .card-tags {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            margin-top: auto;
         }
-
         .tag {
-            padding: 6px 14px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            transition: all 0.3s;
+            padding: 5px 12px;
+            background: var(--bg-soft);
+            border-radius: var(--r-pill);
+            font-size: 0.78rem;
+            color: var(--text-2);
+            font-weight: 500;
         }
-
-        .game-card:hover .tag {
-            background: rgba(99, 102, 241, 0.1);
-            border-color: rgba(99, 102, 241, 0.2);
-            color: #fff;
-        }
-
-        /* 游戏按钮 */
-        .play-indicator {
-            position: absolute;
-            bottom: 24px;
-            right: 24px;
-            width: 48px;
-            height: 48px;
-            background: var(--primary);
+        .play-fab {
+            width: 44px; height: 44px;
             border-radius: 50%;
+            background: var(--text-1);
+            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            transform: translateX(20px);
-            transition: all 0.4s;
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), background 0.3s;
+            flex-shrink: 0;
         }
+        .game-card.card-color:hover .play-fab { background: var(--c-peach-d); }
+        .game-card.card-mint:hover  .play-fab { background: var(--c-mint-d); }
+        .game-card.card-sky:hover   .play-fab { background: var(--c-sky-d); }
+        .game-card.card-grape:hover .play-fab { background: var(--c-grape-d); }
+        .game-card:hover .play-fab { transform: scale(1.1) rotate(-15deg); }
 
-        .game-card:hover .play-indicator {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* 页脚 */
+        /* 底部 */
         .footer {
-            margin-top: 100px;
-            padding: 60px 20px;
             text-align: center;
-            border-top: 1px solid var(--glass-border);
+            padding: 40px 0 20px;
+            border-top: 2px dashed var(--border-2);
         }
-
         .footer-logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
         }
-
+        .footer-logo-emoji {
+            display: inline-flex;
+            width: 36px; height: 36px;
+            background: var(--grad-warm);
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: var(--shadow-sm);
+        }
         .footer p {
-            color: var(--text-dim);
+            color: var(--text-3);
             font-size: 0.9rem;
+            margin: 8px 0;
         }
-
         .footer a {
-            color: var(--primary);
+            color: var(--c-peach-d);
             text-decoration: none;
-            transition: color 0.3s;
+            font-weight: 600;
         }
+        .footer a:hover { text-decoration: underline; }
 
-        .footer a:hover {
-            color: var(--accent);
-        }
-
-        /* 响应式调整 */
         @media (max-width: 768px) {
-            .title-group h1 { font-size: 3rem; }
-            .hero-image { max-width: 320px; }
-            .games-grid { grid-template-columns: 1fr; }
+            .hero-image { width: 160px; height: 160px; }
+            .games-grid { grid-template-columns: 1fr; gap: 16px; }
+            .game-card { padding: 22px 20px; }
         }
     </style>
 </head>
 <body>
-    <div class="bg-animate">
-        <div class="blob"></div>
-        <div class="blob blob-2"></div>
+    <!-- 装饰星星 -->
+    <div class="deco-stars" aria-hidden="true">
+        <span class="star" style="top:8%;left:6%;animation-delay:0s">⭐</span>
+        <span class="star" style="top:18%;right:10%;animation-delay:-1s">✨</span>
+        <span class="star" style="top:62%;left:4%;animation-delay:-2s">🌟</span>
+        <span class="star" style="top:78%;right:8%;animation-delay:-1.5s">⭐</span>
+        <span class="star" style="top:35%;left:50%;animation-delay:-0.8s">✨</span>
+        <span class="star" style="bottom:10%;left:30%;animation-delay:-2.2s">🌟</span>
     </div>
 
     <div class="container">
-        <header class="header">
-            <div class="hero-section">
-                <div class="hero-image-wrapper">
-                    <img src="11.png" alt="11_Game 封面" class="hero-image" />
-                </div>
-                <div class="title-group">
-                    <p class="subtitle">Personal Game Suite</p>
-                    <h1>11_Game</h1>
-                    <p class="description">
-                        欢迎来到11小朋友的游戏世界！这里有专门为你准备的启蒙小游戏，让我们在互动中探索颜色、音乐、艺术与天文的奇妙领域。
-                    </p>
-                </div>
+        <!-- Hero -->
+        <header class="hero">
+            <div class="top-badge">
+                <span class="dot"></span>
+                <span>专为 11 小朋友打造 · 4 款启蒙小游戏</span>
+            </div>
+
+            <div class="hero-image-wrap">
+                <img src="11.png" alt="11_Game 封面" class="hero-image" />
+                <span class="hero-emoji e1">🎨</span>
+                <span class="hero-emoji e2">🎹</span>
+                <span class="hero-emoji e3">🌙</span>
+                <span class="hero-emoji e4">✨</span>
+            </div>
+
+            <h1>
+                你好呀，<span class="gradient-text">小探险家</span>！<br/>
+                一起来玩吧～
+            </h1>
+            <p class="lead">
+                这里是 11 小朋友专属的奇妙游戏屋。<br/>
+                我们准备了 4 款好玩的小游戏，让你在玩耍里悄悄学到好多东西！
+            </p>
+
+            <div class="hero-stats">
+                <span class="stat-pill">🎮 <strong>4</strong> 款游戏</span>
+                <span class="stat-pill">🎯 <strong>0</strong> 广告</span>
+                <span class="stat-pill">🆓 完全免费</span>
+                <span class="stat-pill">📱 手机也能玩</span>
             </div>
         </header>
 
-        <main class="games-grid">
-            <!-- 颜色魔法学院 -->
-            <a href="color_mixing/index.html" class="game-card">
-                <div class="card-icon">🎨</div>
-                <div class="card-content">
+        <!-- 游戏区 -->
+        <section>
+            <div class="section-title">
+                <h2>🎲 选一个你想玩的</h2>
+                <span class="hint">点击卡片就能开始 👉</span>
+            </div>
+
+            <div class="games-grid">
+                <a href="color_mixing/index.html" class="game-card card-color">
+                    <div class="card-icon-wrap">🎨</div>
                     <h3>颜色魔法学院</h3>
-                    <p>探索光与颜料的混合奥秘。通过互动实验室学习颜色是如何变化的，开启科学启蒙的第一步。</p>
-                    <div class="card-tags">
-                        <span class="tag"># 颜色启蒙</span>
-                        <span class="tag"># 科学实验</span>
+                    <p>光与颜料的混合实验。还可以闯关、测验，看看你能拿几颗星！</p>
+                    <div class="card-meta">
+                        <div class="card-tags">
+                            <span class="tag">🌈 颜色</span>
+                            <span class="tag">🔬 科学</span>
+                        </div>
+                        <div class="play-fab">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
+                        </div>
                     </div>
-                </div>
-                <div class="play-indicator">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                </div>
-            </a>
+                </a>
 
-            <!-- 键盘钢琴 -->
-            <a href="piano/index.html" class="game-card">
-                <div class="card-icon">🎹</div>
-                <div class="card-content">
+                <a href="piano/index.html" class="game-card card-mint">
+                    <div class="card-icon-wrap">🎹</div>
                     <h3>指尖钢琴家</h3>
-                    <p>用键盘奏响悦耳旋律。支持自由创作与经典曲目演奏模式，让每一位小朋友都能感受音乐的律动。</p>
-                    <div class="card-tags">
-                        <span class="tag"># 音乐节奏</span>
-                        <span class="tag"># 艺术创作</span>
+                    <p>按下键盘弹钢琴！跟弹模式还会告诉你弹得有多准～</p>
+                    <div class="card-meta">
+                        <div class="card-tags">
+                            <span class="tag">🎵 音乐</span>
+                            <span class="tag">⌨️ 键盘</span>
+                        </div>
+                        <div class="play-fab">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
+                        </div>
                     </div>
-                </div>
-                <div class="play-indicator">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                </div>
-            </a>
+                </a>
 
-            <!-- 沙画艺术 -->
-            <a href="sand_art/index.html" class="game-card">
-                <div class="card-icon">✨</div>
-                <div class="card-content">
+                <a href="sand_art/index.html" class="game-card card-grape">
+                    <div class="card-icon-wrap">✨</div>
                     <h3>沙画艺术馆</h3>
-                    <p>以沙为笔，绘就童年。内置小马宝莉主题模板，在流沙的光影变幻中释放无限想象力。</p>
-                    <div class="card-tags">
-                        <span class="tag"># 创意绘图</span>
-                        <span class="tag"># 互动艺术</span>
+                    <p>把彩色沙粒洒在画布上！沙子会真的往下落哦，还能录下你的画。</p>
+                    <div class="card-meta">
+                        <div class="card-tags">
+                            <span class="tag">🎨 创意</span>
+                            <span class="tag">🦄 小马</span>
+                        </div>
+                        <div class="play-fab">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
+                        </div>
                     </div>
-                </div>
-                <div class="play-indicator">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                </div>
-            </a>
+                </a>
 
-            <!-- 月球阴晴圆缺 -->
-            <a href="moon_phases/index.html" class="game-card">
-                <div class="card-icon">🌙</div>
-                <div class="card-content">
+                <a href="moon_phases/index.html" class="game-card card-sky">
+                    <div class="card-icon-wrap">🌙</div>
                     <h3>月球漫步者</h3>
-                    <p>观测月相的阴晴圆缺。通过三维互动模拟了解天体运行规律，激发对宇宙星空的探索兴趣。</p>
-                    <div class="card-tags">
-                        <span class="tag"># 天文知识</span>
-                        <span class="tag"># 3D模拟</span>
+                    <p>拖一拖月亮，看看它怎么从弯弯变圆圆！还能看到大海的潮水变化。</p>
+                    <div class="card-meta">
+                        <div class="card-tags">
+                            <span class="tag">🌌 天文</span>
+                            <span class="tag">🌊 潮汐</span>
+                        </div>
+                        <div class="play-fab">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
+                        </div>
                     </div>
-                </div>
-                <div class="play-indicator">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                </div>
-            </a>
-        </main>
+                </a>
+            </div>
+        </section>
 
         <footer class="footer">
-            <div class="footer-logo">11_Game</div>
+            <div class="footer-logo">
+                <span class="footer-logo-emoji">🌈</span>
+                <span>11_Game</span>
+            </div>
             <p>专为 11 小朋友打造的创意互动空间</p>
-            <p style="margin-top: 10px; opacity: 0.5;">
-                &copy; 2026 Crafted with ❤️ for 11 | <a href="https://github.com/marspu/11_Game" target="_blank">View on GitHub</a>
+            <p style="opacity:0.7">
+                &copy; 2026 用 ❤️ 制作 ·
+                <a href="https://github.com/marspu/11_Game" target="_blank">GitHub</a>
             </p>
         </footer>
     </div>
